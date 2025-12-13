@@ -1,16 +1,46 @@
 const Admin = require('../models/adminModel.js');
-const Mkt = require('../models/mktModel.js');      
-const Hr = require('../models/hrModel.js');          
-const Auth = require('../models/authModel.js');   
 
 module.exports = {
 
-    getMkt: async (req, res) => {
+    getSales: async (req, res) => {
         try {
-            const mktView = await Mkt.getAll();
+            const sales = await Admin.getSales();  
             res.json({
                 success: true,
-                data: mktView
+                count: sales.length,
+                data: sales
+            });
+        } catch (err) {
+            res.status(500).json({ 
+                success: false,
+                error: err.message 
+            });
+        }
+    },
+
+    getCustomers: async (req, res) => {
+        try {
+            const customers = await Admin.getCustomers();  
+            res.json({
+                success: true,
+                count: customers.length,
+                data: customers
+            });
+        } catch (err) {
+            res.status(500).json({ 
+                success: false,
+                error: err.message 
+            });
+        }
+    },
+
+    getProducts: async (req, res) => {
+        try {
+            const products = await Admin.getProducts();  
+            res.json({
+                success: true,
+                count: products.length,
+                data: products
             });
         } catch (err) {
             res.status(500).json({ 
@@ -22,10 +52,11 @@ module.exports = {
 
     getHr: async (req, res) => {
         try {
-            const hrView = await Hr.getAll();
+            const hrEmployees = await Admin.getHr();  
             res.json({
                 success: true,
-                data: hrView
+                count: hrEmployees.length,
+                data: hrEmployees
             });
         } catch (err) {
             res.status(500).json({ 
@@ -37,9 +68,10 @@ module.exports = {
 
     getAllUsers: async (req, res) => {
         try {
-            const users = await Auth.getAll(); 
+            const users = await Admin.getAllUsers();  
             res.json({
                 success: true,
+                count: users.length,
                 data: users
             });
         } catch (err) {
@@ -50,19 +82,16 @@ module.exports = {
         }
     },
 
-    getUserByName: async (req, res) => {
+    getUserById: async (req, res) => {
         try {
-            const user = await Auth.getByName(req.params.first_name);
-            if (!user) return res.status(404).json({ 
-                success: false,
-                message: 'Usuario no encontrado' 
-            });
+            const { user_id } = req.params;
+            const user = await Admin.getUserById(user_id); 
             res.json({
                 success: true,
                 data: user
             });
         } catch (err) {
-            res.status(500).json({ 
+            res.status(404).json({ 
                 success: false,
                 error: err.message 
             });
@@ -71,14 +100,10 @@ module.exports = {
 
     createUser: async (req, res) => {
         try {
-            const newUser = await Auth.create(req.body);
-            res.status(201).json({
-                success: true,
-                message: 'Usuario creado exitosamente',
-                data: newUser
-            });
+            const result = await Admin.createUser(req.body);  
+            res.status(201).json(result);
         } catch (err) {
-            res.status(500).json({ 
+            res.status(400).json({ 
                 success: false,
                 error: err.message 
             });
@@ -87,27 +112,12 @@ module.exports = {
 
     updateUserById: async (req, res) => {
         try {
-            const { user_id } = req.params; 
-            const updatedUser = await Auth.update(user_id, req.body);
-            
-            if (!updatedUser) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuario no encontrado' 
-                });
-            }
-            
-            res.json({
-                success: true,
-                message: 'Usuario actualizado correctamente',
-                data: updatedUser
-            });
-            
+            const { user_id } = req.params;
+            const result = await Admin.updateUserById(user_id, req.body);  
+            res.json(result);
         } catch (err) {
-            console.error('Error al actualizar usuario:', err);
-            res.status(500).json({ 
+            res.status(400).json({ 
                 success: false,
-                message: 'Error al actualizar usuario',
                 error: err.message 
             });
         }
@@ -116,35 +126,12 @@ module.exports = {
     deleteUserById: async (req, res) => {
         try {
             const { user_id } = req.params;
-            
-            if (!user_id) {
-                return res.status(400).json({
-                    success: false,
-                    message: 'ID de usuario requerido'
-                });
-            }
-            
-            const deletedUser = await Auth.delete(user_id);
-            
-            if (!deletedUser) {
-                return res.status(404).json({
-                    success: false,
-                    message: `Usuario con ID ${user_id} no encontrado`
-                });
-            }
-            
-            res.json({
-                success: true,
-                message: 'Usuario eliminado exitosamente',
-                data: deletedUser
-            });
-            
+            const result = await Admin.deleteUserById(user_id);  
+            res.json(result);
         } catch (err) {
-            console.error(`Error al eliminar usuario ID ${req.params.user_id}:`, err);
-            res.status(500).json({
+            res.status(400).json({ 
                 success: false,
-                message: 'Error al eliminar usuario',
-                error: err.message
+                error: err.message 
             });
         }
     }

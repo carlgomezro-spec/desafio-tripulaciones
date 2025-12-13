@@ -15,27 +15,23 @@ module.exports = {
                 });
             }
 
-            const user = await Auth.getByEmail(email);
-            if (!user) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Usuario no encontrado' 
-                });
-            }
-
-            const validPassword = await bcrypt.compare(password, user.password);
-            if (!validPassword) {
+            const userResult = await Auth.login(email, password);
+            
+            if (userResult.length === 0) {
                 return res.status(401).json({ 
                     success: false,
-                    message: 'Contraseña incorrecta' 
+                    message: 'Credenciales inválidas' 
                 });
             }
 
+            const user = userResult[0];
+            
             const token = jwt.sign(
                 { 
                     employee_id: user.employee_id, 
                     role: user.role,
-                    email: user.email
+                    email: user.email,
+                    user_id: user.user_id
                 },
                 jwtConfig.secret,
                 { expiresIn: jwtConfig.expiresIn }
@@ -45,9 +41,8 @@ module.exports = {
                 success: true,
                 token,
                 user: {
+                    user_id: user.user_id,
                     employee_id: user.employee_id,
-                    first_name: user.first_name,
-                    last_name: user.last_name,
                     email: user.email,
                     role: user.role
                 }

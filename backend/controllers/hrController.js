@@ -1,20 +1,26 @@
 const Hr = require('../models/hrModel.js');
 
 module.exports = {
-
     getAllEmployees: async (req, res) => {
         try {
-            const employeesView = await Hr.getAll();
-            res.json(employeesView);
+            const employees = await Hr.getAllEmployees();  
+            res.json({
+                success: true,
+                count: employees.length,
+                data: employees
+            });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ 
+                success: false,
+                error: err.message 
+            });
         }
     },
 
     getEmployeeById: async (req, res) => {
         try {
-            const { id } = req.params;
-            const employee = await Hr.getById(id); 
+            const { employee_id } = req.params;  
+            const employee = await Hr.getEmployeeById(employee_id);  
             
             if (!employee) {
                 return res.status(404).json({ 
@@ -23,27 +29,40 @@ module.exports = {
                 });
             }
             
-            res.json(employee);
+            res.json({
+                success: true,
+                data: employee
+            });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(404).json({ 
+                success: false,
+                error: err.message 
+            });
         }
     },
 
     getEmployeeByName: async (req, res) => {
         try {
-            const { name } = req.params;
-            const employee = await Hr.getByName(name); 
+            const { first_name } = req.params;  
+            const employees = await Hr.getEmployeeByName(first_name);  
             
-            if (!employee) {
+            if (employees.length === 0) {
                 return res.status(404).json({ 
                     success: false,
                     message: 'Empleado no encontrado' 
                 });
             }
             
-            res.json(employee);
+            res.json({
+                success: true,
+                count: employees.length,
+                data: employees
+            });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(404).json({ 
+                success: false,
+                error: err.message 
+            });
         }
     },
 
@@ -56,16 +75,12 @@ module.exports = {
                 });
             }
             
-            const newEmployee = await Hr.create(req.body); 
+            const result = await Hr.createEmployee(req.body);  
             
-            res.status(201).json({
-                success: true,
-                message: 'Empleado creado exitosamente',
-                data: newEmployee
-            });
+            res.status(201).json(result);
         } catch (err) {
             console.error('Error al crear empleado:', err);
-            res.status(500).json({ 
+            res.status(400).json({ 
                 success: false,
                 error: err.message 
             });
@@ -74,32 +89,21 @@ module.exports = {
 
     updateEmployeeById: async (req, res) => {
         try {
-            const { id } = req.params;
+            const { employee_id } = req.params;  
             
-            if (!id) {
+            if (!employee_id) {
                 return res.status(400).json({
                     success: false,
                     message: 'ID de empleado requerido'
                 });
             }
             
-            const updatedEmployee = await Hr.update(id, req.body);
+            const result = await Hr.updateEmployeeById(employee_id, req.body);  
             
-            if (!updatedEmployee) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Empleado no encontrado' 
-                });
-            }
-            
-            res.json({
-                success: true,
-                message: 'Empleado actualizado correctamente',
-                data: updatedEmployee
-            });
+            res.json(result);
         } catch (err) {
             console.error('Error al actualizar empleado:', err);
-            res.status(500).json({ 
+            res.status(400).json({ 
                 success: false,
                 error: err.message 
             });
@@ -108,32 +112,21 @@ module.exports = {
 
     deleteEmployeeById: async (req, res) => {
         try {
-            const { id } = req.params;
+            const { employee_id } = req.params; 
             
-            if (!id) {
+            if (!employee_id) {
                 return res.status(400).json({
                     success: false,
                     message: 'ID de empleado requerido'
                 });
             }
             
-            const deletedEmployee = await Hr.delete(id);
+            const result = await Hr.deleteEmployeeById(employee_id); 
             
-            if (!deletedEmployee) {
-                return res.status(404).json({ 
-                    success: false,
-                    message: 'Empleado no encontrado' 
-                });
-            }
-            
-            res.json({
-                success: true,
-                message: 'Empleado eliminado exitosamente',
-                data: deletedEmployee
-            });
+            res.json(result);
         } catch (err) {
             console.error('Error al eliminar empleado:', err);
-            res.status(500).json({ 
+            res.status(400).json({ 
                 success: false,
                 error: err.message 
             });
