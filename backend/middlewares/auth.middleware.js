@@ -1,16 +1,22 @@
-const jwt = require('jsonwebtoken');
-const jwtConfig = require('../config/jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ message: 'No token provided' });
 
-  const token = authHeader.split(' ')[1];
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Token requerido" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
   try {
-    const decoded = jwt.verify(token, jwtConfig.secret);
-    req.user = decoded; // req.user.id_user estará disponible
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // user_id, role, email estarán aquí
+    req.user = decoded;
+
     next();
-  } catch (err) {
-    res.status(401).json({ message: 'Token inválido' });
+  } catch (error) {
+    return res.status(401).json({ message: "Token inválido" });
   }
 };

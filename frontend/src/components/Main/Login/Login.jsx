@@ -10,25 +10,39 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await login(email, password);
-      const user = data.user;
+  e.preventDefault();
 
-      if (!user || !user.role) {
-        alert("Error inesperado en el servidor");
-        return;
-      }
+  try {
+    const data = await login({ email, password });
+    const { user, token } = data;
 
-      if (user.role === "admin") {
-        navigate("/admin/bookings");
-      } else {
-        navigate("/home");
-      }
-    } catch (err) {
-      alert("Credenciales incorrectas");
+    if (!user?.role) {
+      alert("Error inesperado en el servidor");
+      return;
     }
-  };
+
+    // (opcional pero recomendado)
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", user.role);
+
+    switch (user.role) {
+      case "admin":
+        navigate("/admin");
+        break;
+      case "hr":
+        navigate("/hr");
+        break;
+      case "mkt":
+        navigate("/mkt");
+        break;
+      default:
+        navigate("/");
+    }
+
+  } catch (err) {
+    alert("Credenciales incorrectas");
+  }
+};
 
   return (
     <section className="login-section">

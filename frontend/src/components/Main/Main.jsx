@@ -1,25 +1,31 @@
-import React from "react";
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
+import Layout from "../Layout/Layout";
 
 import AdminDashboard from "./AdminDashboard/AdminDashboad";
-import CreateUserContainer from "./CreateUserContainer/CreateUserContainer"
-import AllUsers from "./AllUsers/AllUsers"
-import Splash from "../Main/Splash/Splash";
-import Login from "../Main/Login/Login";
-import MktPage from "../Main/MktPage/MktPage";
+import CreateUserContainer from "./CreateUserContainer/CreateUserContainer";
+import AllUsers from "./AllUsers/AllUsers";
+import Splash from "./Splash/Splash";
+import Login from "./Login/Login";
+import MktPage from "./MktPage/MktPage";
 
 const Main = () => {
-  return <main>
-    <Routes>
+  return (
+    <main>
+      <Routes>
+        {/* Rutas SIN layout */}
         <Route path="/" element={<Splash />} />
         <Route path="/login" element={<Login />} />
-        <Route path='/admin'element={<AdminDashboard/>}/>
-        <Route path='/createuser'element={<CreateUserContainer/>}/>
-        <Route path='/users'element={<AllUsers/>}/>
-        <Route path="/mkt" element={<MktPage />} />
 
-    </Routes>
-  </main>;
+        {/* Rutas CON layout */}
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/createuser" element={<CreateUserContainer />} />
+          <Route path="/users" element={<AllUsers />} />
+          <Route path="/mkt" element={<MktPage />} />
+        </Route>
+      </Routes>
+    </main>
+  );
 };
 
 export default Main;

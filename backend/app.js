@@ -1,69 +1,81 @@
 const express = require("express");
 const cowsay = require("cowsay");
 const helmet = require("helmet");
-
-const app = express(); // Creando el servidor
-app.use(express.json());
-app.use(helmet());
-
-// Swagger
-const { swaggerUi, swaggerSpec } = require("./config/swagger");
-
-const path = require("path");
 const cors = require("cors");
+const path = require("path");
+const morgan = require("./middlewares/morgan");
+require("dotenv").config();
 
-// Permitir cualquier origen (para desarrollo)
+const app = express();
+
+/* ================================
+   🔐 CORS (DEBE IR ARRIBA DEL TODO)
+================================ */
 app.use(cors({
-  origin: 'http://localhost:5173', // tu frontend
-  credentials: true // necesario para cookies o Authorization con JWT
+  origin: "http://localhost:5173",
+  credentials: true,
 }));
 
-// Configurar puerto con valor por defecto
-const port = process.env.PORT || 3000;
+/* ================================
+   🧩 Middlewares base
+================================ */
+app.use(express.json());
+app.use(helmet());
+app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 
-// Leer fichero .env
-require('dotenv').config();
 
-// Middlewares
-const error404 = require("./middlewares/error404");
+/* ================================
+   📘 Swagger
+================================ */
+const { swaggerUi, swaggerSpec } = require("./config/swagger");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Importar
+/* ================================
+   📦 Rutas
+================================ */
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const hrRoutes = require("./routes/hrRoutes");
 const mktRoutes = require("./routes/mktRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
-// Morgan (descomenta si lo necesitas)
-// const morgan = require("./middlewares/morgan");
-// app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
-
-// Ruta Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-// Usar rutas
-app.use("/auth", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/hr", hrRoutes);
 app.use("/api/mkt", mktRoutes);
+app.use("/api/chat", chatRoutes);
 
-// Ruta base de comprobación
-app.get('/api', (req, res) => {
-  res.send('✅ Backend funcionando correctamente');
+/* ================================
+   ✅ Healthcheck
+================================ */
+app.get("/api", (req, res) => {
+  res.send("✅ Backend funcionando correctamente");
 });
 
-// Esto hace que pille el dist de Docker y Render pille que estamos en produccion
+/* ================================
+   🌍 Producción (React build)
+================================ */
 if (process.env.NODE_ENV === "production") {
-  // Servir archivos estáticos del frontend con React
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  // Manejar cualquier ruta que no sea de la API y servir el index.html de React
+
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+    res.sendFile(
+      path.join(__dirname, "../frontend/dist", "index.html")
+    );
   });
 }
 
-app.use(error404); // Manejo de rutas no encontradas (DEBE IR AL FINAL)
+/* ================================
+   ❌ 404 (SIEMPRE AL FINAL)
+================================ */
+const error404 = require("./middlewares/error404");
+app.use(error404);
 
-// Iniciar el servidor
+/* ================================
+   🚀 Server
+================================ */
+const port = process.env.PORT || 3000;
+
 app.listen(port, () => {
   console.log(`Servidor funcionando en puerto ${port}`);
   console.log(

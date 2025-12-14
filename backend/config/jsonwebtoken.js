@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = process.env.JWT_SECRET
 
 const createToken = (payload, expirationTime = "10min") => {
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
     return jwt.sign(payload, SECRET, {
         expiresIn: expirationTime

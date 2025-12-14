@@ -1,5 +1,102 @@
-.userList{
-    
-    padding: 20px;
-    width: 70vw;
+/* Contenedor general */
+.userList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #f5f5f5; /* gris claro tipo MediaMarkt */
+}
+
+/* Tarjeta de usuario */
+.userCard {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-top: 6px solid #e60012; /* rojo MediaMarkt */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+/* Nombre / email */
+.userCard h3 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.userCard p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Rol */
+.userRole {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Colores por rol */
+.userRole.admin {
+  background-color: #e60012;
+  color: #fff;
+}
+
+.userRole.hr {
+  background-color: #000;
+  color: #fff;
+}
+
+.userRole.mkt {
+  background-color: #f7c600;
+  color: #000;
+}
+
+/* Botones */
+.userActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.userActions button {
+  flex: 1;
+  padding: 8px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* Botón editar */
+.userActions .editBtn {
+  background-color: #111;
+  color: #fff;
+}
+
+.userActions .editBtn:hover {
+  background-color: #333;
+}
+
+/* Botón eliminar */
+.userActions .deleteBtn {
+  background-color: #e60012;
+  color: #fff;
+}
+
+.userActions .deleteBtn:hover {
+  background-color: #c5000f;
 }
