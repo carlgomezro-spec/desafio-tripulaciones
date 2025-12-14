@@ -4,7 +4,7 @@ import DateRangePicker from "../DateRangePicker/DateRangePicker";
 import SummaryCard from "../SummaryCard/SummaryCard";
 import DataTable from "../DataTable/DataTable";
 import { sendChatMessage } from "../../../services/chatServices";
-import "./ChatBox.css";
+import "../Chatbox/Chatbox.css";
 
 const ChatBox = () => {
   const role = localStorage.getItem("role");
