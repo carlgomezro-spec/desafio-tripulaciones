@@ -11,7 +11,7 @@ const User = ({user, handleDelete, handleUpdateUser }) => {
   });
   const [msg, setMsg] = useState('');
 
-  //Actualiza formData
+  //Funcion Actualiza formData
    const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
