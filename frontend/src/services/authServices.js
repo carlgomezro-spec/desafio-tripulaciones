@@ -1,32 +1,21 @@
-import api from './api';
+import api from './api.js';
 
-// POST http://localhost:3000/auth/login
-// POST http://localhost:3000/auth/logout
-// LOG IN
 export const login = async (userData) => {
     try {
-        const response = await api.post(`auth/login`,userData);
-        // Guardar token en localStorage
-        localStorage.setItem('token', response.data.token);
+        const response = await api.post(`auth/login`, userData);
+        
+        const accessToken = response.data.accessToken || response.data.token;
+        
+        if (!accessToken) {
+            throw new Error('El servidor no devolvió un token');
+        }
+        
+        localStorage.setItem('token', accessToken);
+        
         return response.data;
+        
     } catch (error) {
-        throw error.response?.data || { msg: 'Error en login' };
+        console.error('Error en login:', error);
+        throw error.response?.data || { message: 'Error en login' };
     }
 };
-
-//LOG OUT
-export const logout = async () => {
-    try {  
-        // Eliminar token local
-        localStorage.removeItem('token');
-
-        const response = await api.post(`auth/logout`);
-        return response.data;
-    
-    } catch (error) {
-        throw error.response?.data || { msg: 'Error en logout' };
-    }
-};
-    //  localStorage.removeItem('token'); // borra el token
-    // window.location.href = '/login';   // opcional: redirigir
-    // return { success: true, message: 'Logout ok' };

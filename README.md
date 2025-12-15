@@ -1,4 +1,4 @@
-# Descripción del desafío
+# Descripción del desafío de tripulaciones
 
 ## Configurar .env
 

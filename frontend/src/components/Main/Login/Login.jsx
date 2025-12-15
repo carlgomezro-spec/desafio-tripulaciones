@@ -10,39 +10,37 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const data = await login({ email, password });
-    const { user, token } = data;
+    try {
+      const data = await login({ email, password });
+      const { user } = data; 
 
-    if (!user?.role) {
-      alert("Error inesperado en el servidor");
-      return;
+      if (!user?.role) {
+        alert("Error inesperado en el servidor");
+        return;
+      }
+
+      localStorage.setItem("role", user.role);
+
+      switch (user.role) {
+        case "admin":
+          navigate("/admin");
+          break;
+        case "hr":
+          navigate("/hr");
+          break;
+        case "mkt":
+          navigate("/mkt");
+          break;
+        default:
+          navigate("/");
+      }
+
+    } catch (err) {
+      alert("Credenciales incorrectas");
     }
-
-    // (opcional pero recomendado)
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", user.role);
-
-    switch (user.role) {
-      case "admin":
-        navigate("/admin");
-        break;
-      case "hr":
-        navigate("/hr");
-        break;
-      case "mkt":
-        navigate("/mkt");
-        break;
-      default:
-        navigate("/");
-    }
-
-  } catch (err) {
-    alert("Credenciales incorrectas");
-  }
-};
+  };
 
   return (
     <section className="login-section">
