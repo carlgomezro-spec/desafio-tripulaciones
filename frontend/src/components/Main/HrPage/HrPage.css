@@ -1,0 +1,145 @@
+/* ===== PAGE CONTAINER ===== */
+.page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.page-header p {
+  color: #666;
+  margin: 0;
+}
+
+/* ===== HEADER BUTTONS ===== */
+.page-header button {
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.page-header button:hover {
+  background-color: #1d4ed8;
+}
+
+.page-header button:last-child {
+  background-color: #16a34a;
+}
+
+.page-header button:last-child:hover {
+  background-color: #15803d;
+}
+
+/* ===== TABLE ===== */
+.hr-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.hr-table thead {
+  background-color: #f1f5f9;
+}
+
+.hr-table th,
+.hr-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.hr-table th {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+.hr-table tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hr-table tr:last-child {
+  border-bottom: none;
+}
+
+.hr-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* ===== ACTION BUTTON ===== */
+.hr-table button {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.hr-table button:hover {
+  background-color: #b91c1c;
+}
+
+/* ===== EMPTY STATE ===== */
+.hr-table td[colspan] {
+  text-align: center;
+  color: #64748b;
+  padding: 1.5rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hr-table thead {
+    display: none;
+  }
+
+  .hr-table,
+  .hr-table tbody,
+  .hr-table tr,
+  .hr-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .hr-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+
+  .hr-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+
+  .hr-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+  }
+}
