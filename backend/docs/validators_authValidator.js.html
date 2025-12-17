@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: middlewares/authMiddleware</title>
+    <title>JSDoc: Source: validators/authValidator.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,132 +17,81 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: middlewares/authMiddleware</h1>
+    <h1 class="page-title">Source: validators/authValidator.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Colección de middlewares para manejar autenticación JWT y control de acceso por roles.Soporta múltiples fuentes de tokens (header, query, cookies, body) y diferentes niveles de permisos.</div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="middlewares_authMiddleware.js.html">middlewares/authMiddleware.js</a>, <a href="middlewares_authMiddleware.js.html#line3">line 3</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { body } = require('express-validator');
+
+/**
+ * Validador para el endpoint de login
+ * @module validators/authValidators
+ * @description Define las reglas de validación para el inicio de sesión de usuarios.
+ * Utiliza express-validator para validar email y contraseña.
+ */
+exports.loginValidator = [
+  /**
+   * Valida el campo email del formulario de login
+   * @name validateEmail
+   * @function
+   * @memberof validators/authValidators
+   * @returns {ValidationChain} Cadena de validación para express-validator
+   * @example
+   * // Uso en rutas:
+   * router.post('/login', loginValidator, authController.login);
+   * 
+   * // Validaciones aplicadas:
+   * // - Debe ser un email válido
+   */
+  body('email')
+    .isEmail()
+    .withMessage('Email inválido'),
+  
+  /**
+   * Valida el campo password del formulario de login
+   * @name validatePassword
+   * @function
+   * @memberof validators/authValidators
+   * @returns {ValidationChain} Cadena de validación para express-validator
+   * @description Valida que la contraseña cumpla con requisitos de seguridad:
+   * - Longitud entre 8 y 16 caracteres
+   * - Al menos una letra mayúscula
+   * - Al menos una letra minúscula
+   * - Al menos un número
+   * 
+   * @example
+   * // Contraseñas válidas:
+   * // - "Password123"
+   * // - "AdminSecure456"
+   * 
+   * // Contraseñas inválidas:
+   * // - "password" (sin mayúsculas ni números)
+   * // - "PASSWORD123" (sin minúsculas)
+   * // - "Pass1" (muy corta)
+   * // - "PasswordVeryLong123456" (muy larga)
+   * 
+   * // Expresión regular:
+   * /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,16}$/
+   * 
+   * // Explicación de la regex:
+   * // ^            - Inicio de la cadena
+   * // (?=.*[A-Z])  - Al menos una mayúscula
+   * // (?=.*[a-z])  - Al menos una minúscula
+   * // (?=.*\d)     - Al menos un dígito
+   * // .{8,16}      - Longitud entre 8 y 16 caracteres
+   * // $            - Fin de la cadena
+   */
+  body('password')
+    .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,16}$/)
+    .withMessage('La contraseña debe tener 8-16 caracteres, incluir mayúscula, minúscula y un número')
+];</code></pre>
+        </article>
+    </section>
 
 
 

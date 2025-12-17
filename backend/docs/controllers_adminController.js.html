@@ -26,205 +26,320 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Controlador de administración
- * Gestiona ventas, clientes, productos, recursos humanos y usuarios
- * @module controllers/admin
- */
+            <pre class="prettyprint source linenums"><code>const Admin = require('../models/adminModel.js');
 
-const Admin = require('../models/adminModel.js');
+/**
+ * Módulo de controladores para operaciones administrativas
+ * @module controllers/adminController
+ * @description Controlador que gestiona todas las operaciones CRUD y consultas administrativas
+ */
 
 module.exports = {
 
     /**
-     * Obtiene todas las ventas
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Obtiene todas las ventas del sistema
+     * @async
+     * @function getSales
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error del servidor (500) si falla la consulta
+     * @example
+     * // GET /admin/sales
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "count": 5,
+     *   "data": [...]
+     * }
      */
     getSales: async (req, res) => {
         try {
-            const sales = await Admin.getSales();
+            const sales = await Admin.getSales();  
             res.json({
                 success: true,
                 count: sales.length,
                 data: sales
             });
         } catch (err) {
-            res.status(500).json({
+            res.status(500).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Obtiene todos los clientes
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Obtiene todos los clientes del sistema
+     * @async
+     * @function getCustomers
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error del servidor (500) si falla la consulta
+     * @example
+     * // GET /admin/customers
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "count": 20,
+     *   "data": [...]
+     * }
      */
     getCustomers: async (req, res) => {
         try {
-            const customers = await Admin.getCustomers();
+            const customers = await Admin.getCustomers();  
             res.json({
                 success: true,
                 count: customers.length,
                 data: customers
             });
         } catch (err) {
-            res.status(500).json({
+            res.status(500).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Obtiene todos los productos
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Obtiene todos los productos del sistema
+     * @async
+     * @function getProducts
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error del servidor (500) si falla la consulta
+     * @example
+     * // GET /admin/products
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "count": 50,
+     *   "data": [...]
+     * }
      */
     getProducts: async (req, res) => {
         try {
-            const products = await Admin.getProducts();
+            const products = await Admin.getProducts();  
             res.json({
                 success: true,
                 count: products.length,
                 data: products
             });
         } catch (err) {
-            res.status(500).json({
+            res.status(500).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Obtiene empleados del departamento de Recursos Humanos
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Obtiene todos los empleados de recursos humanos
+     * @async
+     * @function getHr
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error del servidor (500) si falla la consulta
+     * @example
+     * // GET /admin/hr
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "count": 10,
+     *   "data": [...]
+     * }
      */
     getHr: async (req, res) => {
         try {
-            const hrEmployees = await Admin.getHr();
+            const hrEmployees = await Admin.getHr();  
             res.json({
                 success: true,
                 count: hrEmployees.length,
                 data: hrEmployees
             });
         } catch (err) {
-            res.status(500).json({
+            res.status(500).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
      * Obtiene todos los usuarios del sistema
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * @async
+     * @function getAllUsers
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error del servidor (500) si falla la consulta
+     * @example
+     * // GET /admin/users
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "count": 100,
+     *   "data": [...]
+     * }
      */
     getAllUsers: async (req, res) => {
         try {
-            const users = await Admin.getAllUsers();
+            const users = await Admin.getAllUsers();  
             res.json({
                 success: true,
                 count: users.length,
                 data: users
             });
         } catch (err) {
-            res.status(500).json({
+            res.status(500).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Obtiene un usuario por su ID
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Obtiene un usuario específico por su ID
+     * @async
+     * @function getUserById
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.params - Parámetros de la URL
+     * @param {string} req.params.user_id - ID del usuario a consultar
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error 404 si el usuario no existe
+     * @example
+     * // GET /admin/users/123
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "data": {...}
+     * }
      */
     getUserById: async (req, res) => {
         try {
             const { user_id } = req.params;
-            const user = await Admin.getUserById(user_id);
+            const user = await Admin.getUserById(user_id); 
             res.json({
                 success: true,
                 data: user
             });
         } catch (err) {
-            res.status(404).json({
+            res.status(404).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Crea un nuevo usuario
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Crea un nuevo usuario en el sistema
+     * @async
+     * @function createUser
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.body - Datos del nuevo usuario
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error 400 si los datos son inválidos
+     * @example
+     * // POST /admin/users
+     * // Body:
+     * {
+     *   "name": "Juan Pérez",
+     *   "email": "juan@example.com",
+     *   "role": "user"
+     * }
+     * // Respuesta exitosa (201):
+     * {
+     *   "success": true,
+     *   "id": 123,
+     *   "message": "Usuario creado exitosamente"
+     * }
      */
     createUser: async (req, res) => {
+        console.log('CreateUser body:', req.body);
         try {
-            const result = await Admin.createUser(req.body);
+            const result = await Admin.createUser(req.body); 
             res.status(201).json(result);
         } catch (err) {
-            res.status(400).json({
+            res.status(400).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
-     * Actualiza un usuario por su ID
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * Actualiza un usuario existente por su ID
+     * @async
+     * @function updateUserById
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.params - Parámetros de la URL
+     * @param {string} req.params.user_id - ID del usuario a actualizar
+     * @param {Object} req.body - Datos actualizados del usuario
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error 400 si los datos son inválidos
+     * @example
+     * // PUT /admin/users/123
+     * // Body:
+     * {
+     *   "name": "Juan Pérez Actualizado",
+     *   "email": "juan.nuevo@example.com"
+     * }
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "message": "Usuario actualizado exitosamente"
+     * }
      */
     updateUserById: async (req, res) => {
         try {
             const { user_id } = req.params;
-            const result = await Admin.updateUserById(user_id, req.body);
+            const result = await Admin.updateUserById(user_id, req.body);  
             res.json(result);
         } catch (err) {
-            res.status(400).json({
+            res.status(400).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     },
 
     /**
      * Elimina un usuario por su ID
-     * @param {import('express').Request} req
-     * @param {import('express').Response} res
-     * @returns {Promise&lt;void>}
+     * @async
+     * @function deleteUserById
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.params - Parámetros de la URL
+     * @param {string} req.params.user_id - ID del usuario a eliminar
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise&lt;void>} Promesa que resuelve con la respuesta JSON
+     * @throws {Error} Error 400 si no se puede eliminar el usuario
+     * @example
+     * // DELETE /admin/users/123
+     * // Respuesta exitosa:
+     * {
+     *   "success": true,
+     *   "message": "Usuario eliminado exitosamente"
+     * }
      */
     deleteUserById: async (req, res) => {
         try {
             const { user_id } = req.params;
-            const result = await Admin.deleteUserById(user_id);
+            const result = await Admin.deleteUserById(user_id);  
             res.json(result);
         } catch (err) {
-            res.status(400).json({
+            res.status(400).json({ 
                 success: false,
-                error: err.message
+                error: err.message 
             });
         }
     }
-};
-</code></pre>
+};</code></pre>
         </article>
     </section>
 
@@ -234,13 +349,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

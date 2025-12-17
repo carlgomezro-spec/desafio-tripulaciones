@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: models/hrModel</title>
+    <title>JSDoc: Module: controllers/hrController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: models/hrModel</h1>
+    <h1 class="page-title">Module: controllers/hrController</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Modelo que maneja todas las operaciones CRUD relacionadas con empleados.Incluye búsqueda por ID, nombre, y operaciones completas de gestión de personal.Normaliza datos (minúsculas) para consistencia en la base de datos.</div>
+            <div class="description">Controlador CRUD para la gestión de empleados.Proporciona endpoints para crear, leer, actualizar y eliminar registros de empleados.</div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line4">line 4</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -144,7 +144,7 @@
     
 
     
-    <h4 class="name" id=".createEmployee"><span class="type-signature">(async, static) </span>createEmployee<span class="signature">(employeeData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~createEmployee"><span class="type-signature">(async, inner) </span>createEmployee<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -152,7 +152,7 @@
 
 
 <div class="description">
-    Todos los campos son obligatorios.Convierte datos de texto a minúsculas para consistencia.Convierte salary a número decimal.
+    Crea un nuevo empleado en el sistema
 </div>
 
 
@@ -188,7 +188,49 @@
 
         <tr>
             
-                <td class="name"><code>employeeData</code></td>
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
             
 
             <td class="type">
@@ -218,6 +260,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -226,29 +270,6 @@
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>employee_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ID único del empleado (requerido)</td>
-        </tr>
-
     
 
         <tr>
@@ -265,6 +286,14 @@
             
             </td>
 
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
             
 
             
@@ -289,6 +318,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -312,33 +349,18 @@
             </td>
 
             
-
-            
-
-            <td class="description last">Email del empleado (requerido)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>position</code></td>
-            
-
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type">string</span>
 
+                
 
-            
-            </td>
-
-            
-
+                
+                </td>
             
 
-            <td class="description last">Cargo/Posición (requerido)</td>
+            
+
+            <td class="description last">Email corporativo (requerido)</td>
         </tr>
 
     
@@ -358,10 +380,82 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">Departamento (requerido)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Cargo/Posición (requerido)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hire_date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Date</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Fecha de contratación</td>
         </tr>
 
     
@@ -375,19 +469,26 @@
             
                 
 <span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">Salario (requerido, se convierte a float)</td>
+            <td class="description last">Salario</td>
         </tr>
 
     
@@ -395,6 +496,36 @@
 </table>
 
             </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
         </tr>
 
     
@@ -435,7 +566,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line99">line 99</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -465,7 +596,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Campos faltantes o error de base de datos
+        400 - Datos del empleado requeridos o inválidos
         </div>
     </dt>
     <dd></dd>
@@ -493,7 +624,7 @@
 
         
 <div class="param-desc">
-    Objeto con mensaje y datos del empleado creado
+    Confirmación de creación
 </div>
 
 
@@ -517,7 +648,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Uso:const resultado = await createEmployee({  employee_id: 101,  first_name: 'Carlos',  last_name: 'Rodríguez',  email: 'carlos@empresa.com',  position: 'Desarrollador Senior',  department: 'Tecnología',  salary: 55000});// Retorna: {message: 'Empleado creado exitosamente', employee: {...}}</code></pre>
+    <pre class="prettyprint"><code>// POST /api/hr/employees// Body:{  "first_name": "Laura",  "last_name": "Martínez",  "email": "laura.martinez@empresa.com",  "department": "Tecnología",  "position": "Desarrolladora Senior",  "hire_date": "2024-01-15",  "salary": 55000}// Respuesta exitosa (201):{  "success": true,  "employee_id": 456,  "message": "Empleado creado exitosamente"}</code></pre>
 
 
 
@@ -527,7 +658,7 @@
     
 
     
-    <h4 class="name" id=".deleteEmployeeById"><span class="type-signature">(async, static) </span>deleteEmployeeById<span class="signature">(employee_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~deleteEmployeeById"><span class="type-signature">(async, inner) </span>deleteEmployeeById<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -571,13 +702,97 @@
 
         <tr>
             
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de la URL
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
                 <td class="name"><code>employee_id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -588,6 +803,43 @@
             
 
             <td class="description last">ID del empleado a eliminar</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
         </tr>
 
     
@@ -628,7 +880,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line229">line 229</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line251">line 251</a>
     </li></ul></dd>
     
 
@@ -658,7 +910,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Empleado no encontrado o error de base de datos
+        400 - ID de empleado requerido
         </div>
     </dt>
     <dd></dd>
@@ -686,7 +938,7 @@
 
         
 <div class="param-desc">
-    Objeto con mensaje y datos del empleado eliminado
+    Confirmación de eliminación
 </div>
 
 
@@ -710,7 +962,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Uso:const resultado = await deleteEmployeeById(123);// Retorna: {//   message: 'Empleado con ID 123 eliminado exitosamente',//   deletedEmployee: {employee_id: 123, first_name: 'juan', ...}// }</code></pre>
+    <pre class="prettyprint"><code>// DELETE /api/hr/employees/123// Respuesta exitosa (200):{  "success": true,  "message": "Empleado eliminado exitosamente",  "employee_id": 123}</code></pre>
 
 
 
@@ -720,7 +972,7 @@
     
 
     
-    <h4 class="name" id=".getAllEmployees"><span class="type-signature">(async, static) </span>getAllEmployees<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id="~getAllEmployees"><span class="type-signature">(async, inner) </span>getAllEmployees<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -737,6 +989,78 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -772,7 +1096,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line12">line 12</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -802,7 +1126,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Error al acceder a la base de datos
+        500 - Error interno del servidor
         </div>
     </dt>
     <dd></dd>
@@ -830,7 +1154,7 @@
 
         
 <div class="param-desc">
-    Array de objetos con datos de todos los empleados
+    Lista de empleados en formato JSON
 </div>
 
 
@@ -841,7 +1165,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Array.&lt;Object>></span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -854,7 +1178,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Uso:const empleados = await getAllEmployees();// Retorna: [//   {employee_id: 1, first_name: 'juan', last_name: 'perez', ...},//   {employee_id: 2, first_name: 'maria', last_name: 'garcia', ...}// ]</code></pre>
+    <pre class="prettyprint"><code>// GET /api/hr/employees// Respuesta exitosa (200):{  "success": true,  "count": 45,  "data": [    { "employee_id": 1, "first_name": "Juan", ... },    { "employee_id": 2, "first_name": "María", ... }  ]}</code></pre>
 
 
 
@@ -864,7 +1188,7 @@
     
 
     
-    <h4 class="name" id=".getEmployeeById"><span class="type-signature">(async, static) </span>getEmployeeById<span class="signature">(employee_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~getEmployeeById"><span class="type-signature">(async, inner) </span>getEmployeeById<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -908,13 +1232,97 @@
 
         <tr>
             
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de la URL
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
                 <td class="name"><code>employee_id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -925,6 +1333,43 @@
             
 
             <td class="description last">ID numérico del empleado</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
         </tr>
 
     
@@ -965,7 +1410,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line36">line 36</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -995,7 +1440,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Empleado no encontrado o error de base de datos
+        404 - Empleado no encontrado
         </div>
     </dt>
     <dd></dd>
@@ -1023,7 +1468,7 @@
 
         
 <div class="param-desc">
-    Objeto con datos del empleado
+    Datos del empleado en formato JSON
 </div>
 
 
@@ -1047,7 +1492,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Uso:const empleado = await getEmployeeById(123);// Retorna: {employee_id: 123, first_name: 'juan', last_name: 'perez', ...}// Si no existe: throw new Error('Empleado con ID 123 no encontrado')</code></pre>
+    <pre class="prettyprint"><code>// GET /api/hr/employees/123// Respuesta exitosa (200):{  "success": true,  "data": {    "employee_id": 123,    "first_name": "Ana",    "last_name": "García",    "department": "Marketing",    "position": "Gerente"  }}</code></pre>
 
 
 
@@ -1057,7 +1502,7 @@
     
 
     
-    <h4 class="name" id=".getEmployeeByName"><span class="type-signature">(async, static) </span>getEmployeeByName<span class="signature">(first_name)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id="~getEmployeeByName"><span class="type-signature">(async, inner) </span>getEmployeeByName<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1065,7 +1510,7 @@
 
 
 <div class="description">
-    Realiza búsqueda case-insensitive (convierte a minúsculas).Puede retornar múltiples empleados si hay coincidencias parciales.
+    Busca empleados por su nombre (coincidencia parcial)
 </div>
 
 
@@ -1078,6 +1523,90 @@
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de la URL
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -1124,6 +1653,43 @@
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -1158,7 +1724,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line63">line 63</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -1188,7 +1754,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        No se encontraron empleados con ese nombre
+        404 - No se encontraron empleados con ese nombre
         </div>
     </dt>
     <dd></dd>
@@ -1216,7 +1782,7 @@
 
         
 <div class="param-desc">
-    Array de objetos con empleados que coinciden
+    Lista de empleados que coinciden con el nombre
 </div>
 
 
@@ -1227,7 +1793,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Array.&lt;Object>></span>
+<span class="param-type">Promise.&lt;Object></span>
 
 
     </dd>
@@ -1238,11 +1804,9 @@
 
 
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Uso:const empleados = await getEmployeeByName('juan');// Retorna: [//   {employee_id: 1, first_name: 'juan', last_name: 'perez'},//   {employee_id: 2, first_name: 'juan', last_name: 'garcia'}// ]</code></pre>
-
-    <pre class="prettyprint"><code>// Búsqueda parcial:await getEmployeeByName('car'); // Encontraría 'carlos', 'carmen', etc.</code></pre>
+    <pre class="prettyprint"><code>// GET /api/hr/employees/name/Carlos// Respuesta exitosa (200):{  "success": true,  "count": 3,  "data": [    { "employee_id": 1, "first_name": "Carlos", ... },    { "employee_id": 2, "first_name": "Carlos", ... }  ]}</code></pre>
 
 
 
@@ -1252,7 +1816,7 @@
     
 
     
-    <h4 class="name" id=".updateEmployeeById"><span class="type-signature">(async, static) </span>updateEmployeeById<span class="signature">(employee_id, employeeData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~updateEmployeeById"><span class="type-signature">(async, inner) </span>updateEmployeeById<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1260,7 +1824,7 @@
 
 
 <div class="description">
-    Actualización parcial: solo los campos proporcionados se actualizan.Campos de texto se convierten a minúsculas.Salary se convierte a float si se proporciona.Mantiene valores actuales para campos no proporcionados.
+    Actualiza los datos de un empleado existente
 </div>
 
 
@@ -1296,30 +1860,7 @@
 
         <tr>
             
-                <td class="name"><code>employee_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ID del empleado a actualizar</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>employeeData</code></td>
+                <td class="name"><code>req</code></td>
             
 
             <td class="type">
@@ -1335,7 +1876,121 @@
 
             
 
-            <td class="description last">Campos a actualizar (todos opcionales)
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de la URL
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>employee_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ID del empleado a actualizar</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Campos a actualizar (parcial o completo)
                 <h6>Properties</h6>
                 
 
@@ -1429,7 +2084,7 @@
 
         <tr>
             
-                <td class="name"><code>email</code></td>
+                <td class="name"><code>department</code></td>
             
 
             <td class="type">
@@ -1455,7 +2110,7 @@
 
             
 
-            <td class="description last">Nuevo email</td>
+            <td class="description last">Nuevo departamento</td>
         </tr>
 
     
@@ -1495,39 +2150,6 @@
 
         <tr>
             
-                <td class="name"><code>department</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Nuevo departamento</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>salary</code></td>
             
 
@@ -1535,9 +2157,6 @@
             
                 
 <span class="param-type">number</span>
-|
-
-<span class="param-type">string</span>
 
 
             
@@ -1565,6 +2184,36 @@
 </table>
 
             </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
         </tr>
 
     
@@ -1605,7 +2254,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_hrModel.js.html">models/hrModel.js</a>, <a href="models_hrModel.js.html#line159">line 159</a>
+        <a href="controllers_hrController.js.html">controllers/hrController.js</a>, <a href="controllers_hrController.js.html#line197">line 197</a>
     </li></ul></dd>
     
 
@@ -1635,7 +2284,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Empleado no encontrado o error de base de datos
+        400 - ID de empleado requerido o datos inválidos
         </div>
     </dt>
     <dd></dd>
@@ -1663,7 +2312,7 @@
 
         
 <div class="param-desc">
-    Objeto con mensaje y datos del empleado actualizado
+    Confirmación de actualización
 </div>
 
 
@@ -1685,11 +2334,9 @@
 
 
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Actualizar solo salario:await updateEmployeeById(123, { salary: 60000 });</code></pre>
-
-    <pre class="prettyprint"><code>// Actualizar múltiples campos:await updateEmployeeById(123, {   position: 'Gerente de Proyecto',  department: 'Innovación',  salary: 65000});</code></pre>
+    <pre class="prettyprint"><code>// PUT /api/hr/employees/123// Body:{  "department": "Innovación",  "position": "Líder de Proyecto",  "salary": 60000}// Respuesta exitosa (200):{  "success": true,  "message": "Empleado actualizado exitosamente",  "updated_fields": ["department", "position", "salary"]}</code></pre>
 
 
 
