@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: models/mktModel</title>
+    <title>JSDoc: Module: controllers/mktController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: models/mktModel</h1>
+    <h1 class="page-title">Module: controllers/mktController</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Modelo que maneja consultas paginadas para ventas, clientes y productos.Implementa paginación eficiente con conteo total de registros para interfaces de usuario.</div>
+            <div class="description">Controlador para consultas paginadas de ventas, clientes y productos.Proporciona endpoints para obtener datos de marketing con soporte de paginación.</div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_mktModel.js.html">models/mktModel.js</a>, <a href="models_mktModel.js.html#line4">line 4</a>
+        <a href="controllers_mktController.js.html">controllers/mktController.js</a>, <a href="controllers_mktController.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -144,7 +144,7 @@
     
 
     
-    <h4 class="name" id=".getCustomersPaginated"><span class="type-signature">(async, static) </span>getCustomersPaginated<span class="signature">(page<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~getCustomers"><span class="type-signature">(async, inner) </span>getCustomers<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -152,7 +152,7 @@
 
 
 <div class="description">
-    Misma estructura de paginación que getSalesPaginated pero para clientes.Útil para interfaces que muestran listados largos de clientes.
+    Obtiene los clientes paginados del sistema
 </div>
 
 
@@ -165,6 +165,90 @@
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de consulta de la URL
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -270,6 +354,43 @@
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -304,7 +425,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_mktModel.js.html">models/mktModel.js</a>, <a href="models_mktModel.js.html#line72">line 72</a>
+        <a href="controllers_mktController.js.html">controllers/mktController.js</a>, <a href="controllers_mktController.js.html#line58">line 58</a>
     </li></ul></dd>
     
 
@@ -334,7 +455,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Error al acceder a la base de datos
+        500 - Error interno del servidor
         </div>
     </dt>
     <dd></dd>
@@ -362,7 +483,7 @@
 
         
 <div class="param-desc">
-    Objeto con datos de clientes y metadatos de paginación
+    Datos paginados de clientes
 </div>
 
 
@@ -386,7 +507,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Obtener segunda página con 15 clientes:const resultado = await getCustomersPaginated(2, 15);// offset = (2-1)*15 = 15 → salta primeros 15 clientes// Retorna 15 clientes a partir del registro 16</code></pre>
+    <pre class="prettyprint"><code>// GET /api/mkt/customers// GET /api/mkt/customers?page=3&amp;limit=15// Respuesta exitosa (200):{  "success": true,  "page": 3,  "limit": 15,  "totalItems": 89,  "totalPages": 6,  "data": [    {      "customer_id": 101,      "name": "Empresa XYZ",      "email": "contacto@xyz.com",      "total_purchases": 12500,      "last_purchase": "2024-01-10"    },    // ... más clientes (hasta 15)  ]}</code></pre>
 
 
 
@@ -396,7 +517,7 @@
     
 
     
-    <h4 class="name" id=".getProductsPaginated"><span class="type-signature">(async, static) </span>getProductsPaginated<span class="signature">(page<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~getProducts"><span class="type-signature">(async, inner) </span>getProducts<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -404,7 +525,7 @@
 
 
 <div class="description">
-    Paginación para catálogo de productos. Incluye información como:- Nombre, categoría, precio, stock, etc.- Metadatos para navegación (página actual, total de páginas)
+    Obtiene los productos paginados del sistema
 </div>
 
 
@@ -417,6 +538,90 @@
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de consulta de la URL
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -522,6 +727,43 @@
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -556,7 +798,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_mktModel.js.html">models/mktModel.js</a>, <a href="models_mktModel.js.html#line117">line 117</a>
+        <a href="controllers_mktController.js.html">controllers/mktController.js</a>, <a href="controllers_mktController.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -586,7 +828,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Error al acceder a la base de datos
+        500 - Error interno del servidor
         </div>
     </dt>
     <dd></dd>
@@ -614,7 +856,7 @@
 
         
 <div class="param-desc">
-    Objeto con datos de productos y metadatos de paginación
+    Datos paginados de productos
 </div>
 
 
@@ -638,7 +880,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Obtener productos para interfaz de catálogo:const resultado = await getProductsPaginated(1, 12); // 12 productos por página// Ideal para grids de productos (3x4, 4x3, etc.)</code></pre>
+    <pre class="prettyprint"><code>// GET /api/mkt/products// GET /api/mkt/products?page=1&amp;limit=5// Respuesta exitosa (200):{  "success": true,  "page": 1,  "limit": 5,  "totalItems": 42,  "totalPages": 9,  "data": [    {      "product_id": 7,      "name": "Producto Premium",      "category": "Electrónica",      "price": 299.99,      "stock": 45,      "total_sales": 120    },    // ... más productos (hasta 5)  ]}</code></pre>
 
 
 
@@ -648,7 +890,7 @@
     
 
     
-    <h4 class="name" id=".getSalesPaginated"><span class="type-signature">(async, static) </span>getSalesPaginated<span class="signature">(page<span class="signature-attributes">opt</span>, limit<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id="~getSales"><span class="type-signature">(async, inner) </span>getSales<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -656,7 +898,7 @@
 
 
 <div class="description">
-    Implementa paginación eficiente con dos consultas:1. Obtiene los registros de la página actual (con LIMIT y OFFSET)2. Cuenta el total de registros para calcular total de páginasCálculo: offset = (page - 1) * limit
+    Obtiene las ventas paginadas del sistema
 </div>
 
 
@@ -669,6 +911,90 @@
 
     <h5>Parameters:</h5>
     
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Parámetros de consulta de la URL
+                <h6>Properties</h6>
+                
 
 <table class="params">
     <thead>
@@ -774,6 +1100,43 @@
     </tbody>
 </table>
 
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -808,7 +1171,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_mktModel.js.html">models/mktModel.js</a>, <a href="models_mktModel.js.html#line11">line 11</a>
+        <a href="controllers_mktController.js.html">controllers/mktController.js</a>, <a href="controllers_mktController.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -838,7 +1201,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Error al acceder a la base de datos
+        500 - Error interno del servidor
         </div>
     </dt>
     <dd></dd>
@@ -866,7 +1229,7 @@
 
         
 <div class="param-desc">
-    Objeto con datos de ventas y metadatos de paginación
+    Datos paginados de ventas
 </div>
 
 
@@ -888,11 +1251,9 @@
 
 
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Obtener primera página con 10 elementos por defecto:const resultado = await getSalesPaginated();// Retorna: {//   data: [...], // Array con hasta 10 ventas//   pagination: {//     page: 1,//     limit: 10,//     total: 150,      // Total de ventas en el sistema//     totalPages: 15   // Math.ceil(150 / 10)//   }// }</code></pre>
-
-    <pre class="prettyprint"><code>// Obtener página 3 con 20 elementos por página:const resultado = await getSalesPaginated(3, 20);// offset = (3-1)*20 = 40 → salta primeros 40 registros// Retorna 20 registros a partir del registro 41</code></pre>
+    <pre class="prettyprint"><code>// GET /api/mkt/sales// GET /api/mkt/sales?page=2&amp;limit=20// Respuesta exitosa (200):{  "success": true,  "page": 2,  "limit": 20,  "totalItems": 150,  "totalPages": 8,  "data": [    {      "sale_id": 45,      "date": "2024-01-15",      "amount": 1250.50,      "product_name": "Producto A",      "customer_name": "Cliente X"    },    // ... más ventas (hasta 20)  ]}</code></pre>
 
 
 

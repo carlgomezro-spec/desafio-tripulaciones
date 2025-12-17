@@ -1,7 +1,44 @@
 const Auth = require('../models/authModel');
 const { createAccessToken, createRefreshToken, verifyRefreshToken } = require('../config/jsonwebtoken'); 
 
+/**
+ * Módulo de controlador de autenticación
+ * @module controllers/authController
+ * @description Controlador que gestiona la autenticación de usuarios, 
+ * incluyendo login, refresh token y logout.
+ */
 module.exports = {
+    /**
+     * Autentica a un usuario y genera tokens JWT
+     * @async
+     * @function login
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.body - Cuerpo de la petición
+     * @param {string} req.body.email - Email del usuario
+     * @param {string} req.body.password - Contraseña del usuario
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise<Object>} Respuesta JSON con tokens y datos del usuario
+     * @throws {Error} 400 - Email o contraseña faltantes
+     * @throws {Error} 401 - Credenciales inválidas
+     * @throws {Error} 500 - Error interno del servidor
+     * @example
+     * // POST /api/auth/login
+     * // Body: { "email": "usuario@example.com", "password": "contraseña123" }
+     * // Respuesta exitosa (200):
+     * {
+     *   "success": true,
+     *   "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+     *   "expiresIn": 900,
+     *   "user": {
+     *     "user_id": 1,
+     *     "email": "usuario@example.com",
+     *     "role": "user",
+     *     "name": "Juan",
+     *     "surname": "Pérez"
+     *   }
+     * }
+     * // Cookie establecida: refresh_token
+     */
     login: async (req, res) => {
         try {
             const { email, password } = req.body;
@@ -64,6 +101,37 @@ module.exports = {
         }
     },
 
+    /**
+     * Renueva el access token usando el refresh token
+     * @async
+     * @function refreshToken
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} req.cookies - Cookies de la petición
+     * @param {string} req.cookies.refresh_token - Refresh token JWT
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Promise<Object>} Respuesta JSON con nuevos tokens
+     * @throws {Error} 401 - REFRESH_TOKEN_REQUIRED: No se proporcionó refresh token
+     * @throws {Error} 401 - SESSION_EXPIRED: Refresh token expirado
+     * @throws {Error} 401 - INVALID_REFRESH_TOKEN: Refresh token inválido
+     * @throws {Error} 401 - USER_NOT_FOUND: Usuario no encontrado
+     * @throws {Error} 500 - Error interno del servidor
+     * @example
+     * // GET /api/auth/refresh
+     * // Cookie: refresh_token=eyJhbGciOiJIUzI1NiIs...
+     * // Respuesta exitosa (200):
+     * {
+     *   "success": true,
+     *   "accessToken": "nuevo_token...",
+     *   "expiresIn": 900,
+     *   "user": {
+     *     "user_id": 1,
+     *     "email": "usuario@example.com",
+     *     "role": "user",
+     *     "name": "Juan",
+     *     "surname": "Pérez"
+     *   }
+     * }
+     */
     refreshToken: async (req, res) => {
         try {
             const refreshToken = req.cookies.refresh_token;
@@ -164,6 +232,22 @@ module.exports = {
             });
         }
     },
+
+    /**
+     * Cierra la sesión del usuario eliminando el refresh token
+     * @function logout
+     * @param {Object} req - Objeto de petición de Express
+     * @param {Object} res - Objeto de respuesta de Express
+     * @returns {Object} Respuesta JSON confirmando el logout
+     * @example
+     * // POST /api/auth/logout
+     * // Respuesta exitosa (200):
+     * {
+     *   "success": true,
+     *   "message": "Sesión cerrada exitosamente."
+     * }
+     * // Cookie eliminada: refresh_token
+     */
     logout: (req, res) => {
         res.clearCookie('refresh_token', {
             httpOnly: true,

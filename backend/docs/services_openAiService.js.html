@@ -26,42 +26,88 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Servicio de interpretación de preguntas usando OpenAI
- * Envía consultas a GPT-4o-mini y retorna la intención o datos interpretados
- * @module services/openAiService
- */
-
-const OpenAI = require("openai");
+            <pre class="prettyprint source linenums"><code>const OpenAI = require("openai");
 const schemaContext = require("../utils/schemaContext");
 
+/**
+ * Cliente configurado de OpenAI para interacciones con la API
+ * @type {Object}
+ * @private
+ */
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 /**
- * Interpreta una pregunta enviada por el usuario
- * Envía la pregunta al modelo GPT-4o-mini y devuelve la respuesta parseada
- *
- * @param {string} question - La pregunta o mensaje del usuario a interpretar
- * @returns {Promise&lt;Object>} Objeto con la intención y datos interpretados por OpenAI
- * @throws {Error} Lanza un error si falla la comunicación con OpenAI o el parseo de la respuesta
+ * Interpreta una pregunta en lenguaje natural y la convierte en una estructura de consulta
+ * @async
+ * @function interpretQuestion
+ * @param {string} question - Pregunta/consulta en lenguaje natural del usuario
+ * @returns {Promise&lt;Object>} Objeto con la interpretación estructurada de la consulta
+ * @throws {SyntaxError} Error al parsear la respuesta JSON de OpenAI
+ * @throws {Error} Error de conexión con la API de OpenAI
+ * @description 
+ * Utiliza el modelo GPT-4o-mini de OpenAI para interpretar preguntas en lenguaje natural
+ * y convertirlas en una estructura JSON que puede ser procesada por el sistema de consultas.
+ * Incluye el contexto del esquema de la base de datos para mejorar la precisión.
+ * 
+ * @example
+ * // Entrada: pregunta en lenguaje natural
+ * const resultado = await interpretQuestion("¿Cuántas ventas hubo en enero?");
+ * 
+ * // Salida: estructura interpretada
+ * {
+ *   "intent": "sales_report",
+ *   "needsDateRange": true,
+ *   "parameters": {
+ *     "metric": "count",
+ *     "timeframe": "monthly",
+ *     "month": "january"
+ *   },
+ *   "confidence": 0.92
+ * }
+ * 
+ * @example
+ * // Otra posible salida:
+ * {
+ *   "intent": "product_list",
+ *   "needsDateRange": false,
+ *   "parameters": {
+ *     "category": "electronics",
+ *     "sortBy": "price",
+ *     "order": "desc"
+ *   },
+ *   "confidence": 0.87
+ * }
  */
 const interpretQuestion = async (question) => {
   const response = await client.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [
-      { role: "system", content: schemaContext },
-      { role: "user", content: question }
+      { 
+        role: "system", 
+        content: schemaContext  // Contexto del esquema de la base de datos
+      },
+      { 
+        role: "user", 
+        content: question 
+      }
     ],
-    temperature: 0
+    temperature: 0  // Temperatura 0 para respuestas deterministas
   });
 
+  // Parsear la respuesta JSON de OpenAI
   return JSON.parse(response.choices[0].message.content);
 };
 
-module.exports = { interpretQuestion };
-</code></pre>
+/**
+ * Módulo de servicio para interpretación de lenguaje natural usando OpenAI
+ * @module services/openAiService
+ * @description Servicio que utiliza la API de OpenAI para interpretar
+ * consultas en lenguaje natural y convertirlas en estructuras consultables.
+ * Integra el contexto del esquema de base de datos para mayor precisión.
+ */
+module.exports = { interpretQuestion };</code></pre>
         </article>
     </section>
 
@@ -71,13 +117,13 @@ module.exports = { interpretQuestion };
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

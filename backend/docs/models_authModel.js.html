@@ -26,75 +26,131 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Modelo de autenticación
- * Gestiona login y logout de usuarios
- * @module models/authModel
- */
-
-const pool = require('../config/db');
+            <pre class="prettyprint source linenums"><code>const pool = require('../config/db');
 const queries = require('../queries/authQueries');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); 
 
 /**
- * Realiza el login de un usuario
+ * Modelo de datos para operaciones de autenticación
+ * @module models/authModel
+ * @description Modelo que maneja las operaciones de login y logout de usuarios.
+ * Incluye verificación de credenciales con bcrypt y manejo seguro de contraseñas.
+ */
+
+/**
+ * Autentica un usuario con email y contraseña
+ * @async
+ * @function login
+ * @memberof module:models/authModel
  * @param {string} email - Email del usuario
- * @param {string} password - Contraseña del usuario
- * @returns {Promise&lt;Array&lt;Object>>} Array con el usuario sin la contraseña; vacío si no coincide
- * @throws {Error} Si ocurre un error durante la consulta o validación
+ * @param {string} password - Contraseña del usuario (en texto plano)
+ * @returns {Promise&lt;Array&lt;Object>>} Array con datos del usuario sin contraseña, o array vacío si falla
+ * @throws {Error} Error de base de datos
+ * @description 
+ * Verifica las credenciales del usuario en este orden:
+ * 1. Busca el usuario por email en la base de datos
+ * 2. Si no existe, retorna array vacío `[]`
+ * 3. Compara la contraseña proporcionada con el hash almacenado usando bcrypt
+ * 4. Si las contraseñas no coinciden, retorna array vacío `[]`
+ * 5. Si las credenciales son válidas, retorna array con un objeto del usuario SIN la contraseña
+ * 
+ * @example
+ * // Uso con credenciales válidas:
+ * const usuario = await login('admin@example.com', 'Password123');
+ * // Retorna: [{user_id: 1, email: 'admin@example.com', role: 'admin', name: 'Juan', ...}]
+ * 
+ * @example
+ * // Uso con credenciales inválidas:
+ * const usuario = await login('noexiste@example.com', 'password');
+ * // Retorna: [] (array vacío)
+ * 
+ * @example
+ * // Uso típico en controller:
+ * const userResult = await Auth.login(email, password);
+ * if (userResult.length === 0) {
+ *   // Credenciales inválidas
+ *   return res.status(401).json({ message: 'Credenciales inválidas' });
+ * }
+ * const user = userResult[0]; // Usuario autenticado
  */
 const login = async (email, password) => {
-  try {
-    const result = await pool.query(queries.login, [email]);
-
-    if (result.rows.length === 0) {
-      return [];
+    try {
+        const result = await pool.query(queries.login, [email]);
+        
+        if (result.rows.length === 0) {
+            return [];
+        }
+        
+        const user = result.rows[0];
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        
+        if (!passwordMatch) {
+            return [];
+        }
+        
+        const { password: _, ...userWithoutPassword } = user;
+        return [userWithoutPassword];
+        
+    } catch (error) {
+        throw error;
     }
-
-    const user = result.rows[0];
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    if (!passwordMatch) {
-      return [];
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
-    return [userWithoutPassword];
-
-  } catch (error) {
-    throw new Error('Error durante login: ' + error.message);
-  }
 };
 
 /**
- * Realiza el logout de un usuario
- * @param {string|number} user_id - ID del usuario
- * @returns {Promise&lt;Object>} Objeto con éxito, mensaje, user_id y timestamp
- * @throws {Error} Si user_id no es proporcionado o ocurre un error
+ * Maneja el logout de un usuario (lógica en servidor)
+ * @async
+ * @function logout
+ * @memberof module:models/authModel
+ * @param {number} user_id - ID del usuario que cierra sesión
+ * @returns {Promise&lt;Object>} Objeto con confirmación del logout
+ * @throws {Error} Si no se proporciona user_id
+ * @description 
+ * Esta función maneja la lógica del logout en el servidor:
+ * - Valida que se proporcione un user_id
+ * - Retorna un objeto de confirmación con timestamp
+ * - En una implementación real, podría invalidar tokens, limpiar sesiones, etc.
+ * 
+ * Nota: El manejo real de logout (limpiar cookies/tokens) se hace en el controller.
+ * Esta función es principalmente para consistencia en la arquitectura.
+ * 
+ * @example
+ * // Uso:
+ * const resultado = await logout(123);
+ * // Retorna: {
+ * //   success: true,
+ * //   message: 'Sesión cerrada exitosamente',
+ * //   user_id: 123,
+ * //   logout_time: '2024-01-15T10:30:00.000Z'
+ * // }
+ * 
+ * @example
+ * // Error:
+ * await logout(); // Sin user_id
+ * // Throw: Error('user_id es requerido')
  */
 const logout = async (user_id) => {
-  try {
-    if (!user_id) {
-      throw new Error('user_id es requerido');
+    try {
+
+        if (!user_id) {
+            throw new Error('user_id es requerido');
+        }
+        
+        return {
+            success: true,
+            message: 'Sesión cerrada exitosamente',
+            user_id: user_id,
+            logout_time: new Date().toISOString()
+        };
+        
+    } catch (error) {
+        throw new Error('Error durante el logout: ' + error.message);
     }
-
-    return {
-      success: true,
-      message: 'Sesión cerrada exitosamente',
-      user_id: user_id,
-      logout_time: new Date().toISOString()
-    };
-
-  } catch (error) {
-    throw new Error('Error durante el logout: ' + error.message);
-  }
 };
 
 module.exports = {
-  login,
-  logout
-};
-</code></pre>
+    login,
+    logout
+};</code></pre>
         </article>
     </section>
 
@@ -104,13 +160,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

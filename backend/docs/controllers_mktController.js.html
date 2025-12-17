@@ -26,21 +26,48 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Controlador de Marketing
- * Gestiona ventas, clientes y productos con paginación
- * @module controllers/mkt
+            <pre class="prettyprint source linenums"><code>const Mkt = require('../models/mktModel.js');
+
+/**
+ * Módulo de controladores para operaciones de Marketing (MKT)
+ * @module controllers/mktController
+ * @description Controlador para consultas paginadas de ventas, clientes y productos.
+ * Proporciona endpoints para obtener datos de marketing con soporte de paginación.
  */
-
-const Mkt = require('../models/mktModel.js');
-
 module.exports = {
 
   /**
-   * Obtiene ventas paginadas
-   * @param {import('express').Request} req - Puede incluir query params: page, limit
-   * @param {import('express').Response} res
-   * @returns {Promise&lt;void>}
+   * Obtiene las ventas paginadas del sistema
+   * @async
+   * @function getSales
+   * @param {Object} req - Objeto de petición de Express
+   * @param {Object} req.query - Parámetros de consulta de la URL
+   * @param {number} [req.query.page=1] - Número de página (1-indexed)
+   * @param {number} [req.query.limit=10] - Número de elementos por página
+   * @param {Object} res - Objeto de respuesta de Express
+   * @returns {Promise&lt;Object>} Datos paginados de ventas
+   * @throws {Error} 500 - Error interno del servidor
+   * @example
+   * // GET /api/mkt/sales
+   * // GET /api/mkt/sales?page=2&amp;limit=20
+   * // Respuesta exitosa (200):
+   * {
+   *   "success": true,
+   *   "page": 2,
+   *   "limit": 20,
+   *   "totalItems": 150,
+   *   "totalPages": 8,
+   *   "data": [
+   *     {
+   *       "sale_id": 45,
+   *       "date": "2024-01-15",
+   *       "amount": 1250.50,
+   *       "product_name": "Producto A",
+   *       "customer_name": "Cliente X"
+   *     },
+   *     // ... más ventas (hasta 20)
+   *   ]
+   * }
    */
   getSales: async (req, res) => {
     try {
@@ -57,10 +84,37 @@ module.exports = {
   },
 
   /**
-   * Obtiene clientes paginados
-   * @param {import('express').Request} req - Puede incluir query params: page, limit
-   * @param {import('express').Response} res
-   * @returns {Promise&lt;void>}
+   * Obtiene los clientes paginados del sistema
+   * @async
+   * @function getCustomers
+   * @param {Object} req - Objeto de petición de Express
+   * @param {Object} req.query - Parámetros de consulta de la URL
+   * @param {number} [req.query.page=1] - Número de página (1-indexed)
+   * @param {number} [req.query.limit=10] - Número de elementos por página
+   * @param {Object} res - Objeto de respuesta de Express
+   * @returns {Promise&lt;Object>} Datos paginados de clientes
+   * @throws {Error} 500 - Error interno del servidor
+   * @example
+   * // GET /api/mkt/customers
+   * // GET /api/mkt/customers?page=3&amp;limit=15
+   * // Respuesta exitosa (200):
+   * {
+   *   "success": true,
+   *   "page": 3,
+   *   "limit": 15,
+   *   "totalItems": 89,
+   *   "totalPages": 6,
+   *   "data": [
+   *     {
+   *       "customer_id": 101,
+   *       "name": "Empresa XYZ",
+   *       "email": "contacto@xyz.com",
+   *       "total_purchases": 12500,
+   *       "last_purchase": "2024-01-10"
+   *     },
+   *     // ... más clientes (hasta 15)
+   *   ]
+   * }
    */
   getCustomers: async (req, res) => {
     try {
@@ -77,10 +131,38 @@ module.exports = {
   },
 
   /**
-   * Obtiene productos paginados
-   * @param {import('express').Request} req - Puede incluir query params: page, limit
-   * @param {import('express').Response} res
-   * @returns {Promise&lt;void>}
+   * Obtiene los productos paginados del sistema
+   * @async
+   * @function getProducts
+   * @param {Object} req - Objeto de petición de Express
+   * @param {Object} req.query - Parámetros de consulta de la URL
+   * @param {number} [req.query.page=1] - Número de página (1-indexed)
+   * @param {number} [req.query.limit=10] - Número de elementos por página
+   * @param {Object} res - Objeto de respuesta de Express
+   * @returns {Promise&lt;Object>} Datos paginados de productos
+   * @throws {Error} 500 - Error interno del servidor
+   * @example
+   * // GET /api/mkt/products
+   * // GET /api/mkt/products?page=1&amp;limit=5
+   * // Respuesta exitosa (200):
+   * {
+   *   "success": true,
+   *   "page": 1,
+   *   "limit": 5,
+   *   "totalItems": 42,
+   *   "totalPages": 9,
+   *   "data": [
+   *     {
+   *       "product_id": 7,
+   *       "name": "Producto Premium",
+   *       "category": "Electrónica",
+   *       "price": 299.99,
+   *       "stock": 45,
+   *       "total_sales": 120
+   *     },
+   *     // ... más productos (hasta 5)
+   *   ]
+   * }
    */
   getProducts: async (req, res) => {
     try {
@@ -94,10 +176,8 @@ module.exports = {
       console.error('❌ getProducts error:', err.message);
       res.status(500).json({ error: err.message });
     }
-  },
-
-};
-</code></pre>
+  }
+};</code></pre>
         </article>
     </section>
 
@@ -107,13 +187,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

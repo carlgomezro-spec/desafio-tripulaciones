@@ -26,19 +26,29 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Modelo de administración de usuarios y datos de ventas, clientes, productos y RRHH
- * @module models/adminModel
- */
-
-const pool = require('../config/db');
+            <pre class="prettyprint source linenums"><code>const pool = require('../config/db');
 const queries = require('../queries/adminQueries');
 const bcrypt = require('bcrypt');
 
 /**
- * Obtiene todas las ventas
- * @returns {Promise&lt;Array&lt;Object>>} Array de ventas
- * @throws {Error} Si falla la consulta
+ * Modelo de datos para operaciones administrativas
+ * @module models/adminModel
+ * @description Modelo que maneja todas las operaciones CRUD y consultas
+ * administrativas relacionadas con ventas, clientes, productos, RRHH y usuarios.
+ * Incluye validaciones de datos y manejo de contraseñas con bcrypt.
+ */
+
+/**
+ * Obtiene todas las ventas del sistema
+ * @async
+ * @function getSales
+ * @memberof module:models/adminModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de ventas
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const ventas = await getSales();
+ * // Retorna: [{sale_id: 1, total: 100.50, ...}, ...]
  */
 const getSales = async () => {
   try {
@@ -50,9 +60,16 @@ const getSales = async () => {
 };
 
 /**
- * Obtiene todos los clientes
- * @returns {Promise&lt;Array&lt;Object>>} Array de clientes
- * @throws {Error} Si falla la consulta
+ * Obtiene todos los clientes del sistema
+ * @async
+ * @function getCustomers
+ * @memberof module:models/adminModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de clientes
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const clientes = await getCustomers();
+ * // Retorna: [{customer_id: 1, name: 'Cliente A', ...}, ...]
  */
 const getCustomers = async () => {
   try {
@@ -64,9 +81,16 @@ const getCustomers = async () => {
 };
 
 /**
- * Obtiene todos los productos
- * @returns {Promise&lt;Array&lt;Object>>} Array de productos
- * @throws {Error} Si falla la consulta
+ * Obtiene todos los productos del sistema
+ * @async
+ * @function getProducts
+ * @memberof module:models/adminModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de productos
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const productos = await getProducts();
+ * // Retorna: [{product_id: 1, name: 'Producto A', price: 50, ...}, ...]
  */
 const getProducts = async () => {
   try {
@@ -78,9 +102,16 @@ const getProducts = async () => {
 };
 
 /**
- * Obtiene todos los empleados del departamento de RRHH
- * @returns {Promise&lt;Array&lt;Object>>} Array de empleados
- * @throws {Error} Si falla la consulta
+ * Obtiene todos los empleados de recursos humanos
+ * @async
+ * @function getHr
+ * @memberof module:models/adminModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de empleados de RRHH
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const empleados = await getHr();
+ * // Retorna: [{employee_id: 1, name: 'Empleado A', department: 'RRHH', ...}, ...]
  */
 const getHr = async () => {
   try {
@@ -92,9 +123,16 @@ const getHr = async () => {
 };
 
 /**
- * Obtiene todos los usuarios
- * @returns {Promise&lt;Array&lt;Object>>} Array de usuarios
- * @throws {Error} Si falla la consulta
+ * Obtiene todos los usuarios del sistema
+ * @async
+ * @function getAllUsers
+ * @memberof module:models/adminModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de usuarios
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const usuarios = await getAllUsers();
+ * // Retorna: [{user_id: 1, email: 'user@example.com', role: 'admin', ...}, ...]
  */
 const getAllUsers = async () => {
   try {
@@ -106,12 +144,21 @@ const getAllUsers = async () => {
 };
 
 /**
- * Obtiene un usuario por su ID
- * @param {string|number} user_id - ID del usuario
- * @returns {Promise&lt;Object>} Objeto usuario
- * @throws {Error} Si no se encuentra el usuario o falla la consulta
+ * Obtiene un usuario específico por su ID
+ * @async
+ * @function getUserById
+ * @memberof module:models/adminModel
+ * @param {number} user_id - ID del usuario a buscar
+ * @returns {Promise&lt;Object>} Objeto con datos del usuario
+ * @throws {Error} Usuario no encontrado o error de base de datos
+ * @example
+ * // Uso:
+ * const usuario = await getUserById(123);
+ * // Retorna: {user_id: 123, email: 'user@example.com', role: 'admin', ...}
+ * 
+ * // Si no existe: throw new Error('Usuario con ID 123 no encontrado')
  */
-const getUserById = async (user_id) => {
+const getUserById = async (user_id) => {  
   try {
     const result = await pool.query(queries.getUserById, [user_id]);
     if (result.rows.length === 0) {
@@ -124,27 +171,40 @@ const getUserById = async (user_id) => {
 };
 
 /**
- * Crea un nuevo usuario
- * @param {Object} userData - Datos del usuario
- * @param {string} userData.role - Rol del usuario (admin, hr, mkt)
+ * Crea un nuevo usuario en el sistema
+ * @async
+ * @function createUser
+ * @memberof module:models/adminModel
+ * @param {Object} userData - Datos del nuevo usuario
+ * @param {string} userData.role - Rol del usuario ('admin', 'hr', 'mkt')
  * @param {string} userData.email - Email del usuario
- * @param {string} userData.password - Contraseña del usuario
- * @returns {Promise&lt;Object>} Resultado con mensaje y usuario creado
- * @throws {Error} Si los datos son inválidos o falla la consulta
+ * @param {string} userData.password - Contraseña del usuario (se hashea automáticamente)
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del usuario creado
+ * @throws {Error} Campos faltantes, rol inválido o error de base de datos
+ * @example
+ * // Uso:
+ * const resultado = await createUser({
+ *   role: 'admin',
+ *   email: 'nuevo@example.com',
+ *   password: 'Password123'
+ * });
+ * // Retorna: {message: 'Usuario creado exitosamente', user: {...}}
  */
 const createUser = async (userData) => {
-  const { role, email, password } = userData;
-
+  const {role, email, password } = userData;
+  
   try {
-    if (!role || !email || !password) {
+
+    if ( !role || !email || !password) {
       throw new Error('Todos los campos son requeridos');
     }
-
+    
     const validRoles = ['admin', 'hr', 'mkt'];
     if (!validRoles.includes(role.toLowerCase())) {
       throw new Error('Rol inválido. Los roles permitidos son: admin, hr, mkt');
     }
-
+    
+    //Hashear contraseñas
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -153,7 +213,7 @@ const createUser = async (userData) => {
       email,
       hashedPassword
     ]);
-
+    
     return {
       message: 'Usuario creado exitosamente',
       user: result.rows[0]
@@ -165,30 +225,56 @@ const createUser = async (userData) => {
 };
 
 /**
- * Actualiza un usuario por su ID
- * @param {string|number} user_id - ID del usuario
- * @param {Object} userData - Datos a actualizar
- * @param {string} [userData.role] - Nuevo rol
- * @param {string} [userData.email] - Nuevo email
- * @param {string} [userData.password] - Nueva contraseña
- * @returns {Promise&lt;Object>} Resultado con mensaje y usuario actualizado
- * @throws {Error} Si el usuario no existe, los datos son inválidos o falla la consulta
+ * Actualiza un usuario existente por su ID
+ * @async
+ * @function updateUserById
+ * @memberof module:models/adminModel
+ * @param {number} user_id - ID del usuario a actualizar
+ * @param {Object} userData - Campos a actualizar (todos opcionales)
+ * @param {string} [userData.role] - Nuevo rol del usuario
+ * @param {string} [userData.email] - Nuevo email del usuario
+ * @param {string} [userData.password] - Nueva contraseña (cadena vacía mantiene la actual)
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del usuario actualizado
+ * @throws {Error} Usuario no encontrado, rol inválido o error de base de datos
+ * @description 
+ * Actualización parcial: solo los campos proporcionados se actualizan.
+ * Contraseña: si se proporciona string vacío (""), se mantiene la contraseña actual.
+ * Si se proporciona nueva contraseña, se hashea automáticamente.
+ * 
+ * @example
+ * // Actualizar solo el rol:
+ * await updateUserById(123, { role: 'hr' });
+ * 
+ * @example
+ * // Actualizar email y contraseña:
+ * await updateUserById(123, { 
+ *   email: 'nuevo@email.com',
+ *   password: 'NuevaPass123' 
+ * });
+ * 
+ * @example
+ * // Mantener contraseña actual:
+ * await updateUserById(123, { 
+ *   email: 'nuevo@email.com',
+ *   password: ""  // ← cadena vacía = mantener contraseña
+ * });
  */
-const updateUserById = async (user_id, userData) => {
+const updateUserById = async (user_id, userData) => {  
   try {
+
     const existingUser = await pool.query(queries.getUserById, [user_id]);
     if (existingUser.rows.length === 0) {
       throw new Error(`Usuario con ID ${user_id} no encontrado`);
     }
-
-    const { role, email, password } = userData;
+    
+    const {role, email, password } = userData;
 
     let newPassword;
     if (password !== undefined &amp;&amp; password !== "") {
       const saltRounds = 10;
       newPassword = await bcrypt.hash(password, saltRounds);
     } else {
-      newPassword = existingUser.rows[0].password;
+      newPassword = existingUser.rows[0].password; // mantener la contraseña actual
     }
 
     const updateData = {
@@ -196,21 +282,21 @@ const updateUserById = async (user_id, userData) => {
       email: email || existingUser.rows[0].email,
       password: newPassword || existingUser.rows[0].password
     };
-
+    
     if (role) {
       const validRoles = ['admin', 'hr', 'mkt'];
       if (!validRoles.includes(updateData.role)) {
         throw new Error('Rol inválido. Los roles permitidos son: admin, hr, mkt');
       }
     }
-
+    
     const result = await pool.query(queries.updateUserById, [
       updateData.role,
       updateData.email,
       updateData.password,
-      user_id
+      user_id  
     ]);
-
+    
     return {
       message: 'Usuario actualizado exitosamente',
       user: result.rows[0]
@@ -222,20 +308,28 @@ const updateUserById = async (user_id, userData) => {
 };
 
 /**
- * Elimina un usuario por su ID
- * @param {string|number} user_id - ID del usuario
- * @returns {Promise&lt;Object>} Resultado con mensaje y usuario eliminado
- * @throws {Error} Si el usuario no existe o falla la consulta
+ * Elimina un usuario del sistema por su ID
+ * @async
+ * @function deleteUserById
+ * @memberof module:models/adminModel
+ * @param {number} user_id - ID del usuario a eliminar
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del usuario eliminado
+ * @throws {Error} Usuario no encontrado o error de base de datos
+ * @example
+ * // Uso:
+ * const resultado = await deleteUserById(123);
+ * // Retorna: {message: 'Usuario con ID 123 eliminado exitosamente', deletedUser: {...}}
  */
-const deleteUserById = async (user_id) => {
+const deleteUserById = async (user_id) => {  
   try {
+
     const existingUser = await pool.query(queries.getUserById, [user_id]);
     if (existingUser.rows.length === 0) {
       throw new Error(`Usuario con ID ${user_id} no encontrado`);
     }
-
-    await pool.query(queries.deleteUserById, [user_id]);
-
+    
+    await pool.query(queries.deleteUserById, [user_id]);  
+    
     return {
       message: `Usuario con ID ${user_id} eliminado exitosamente`,
       deletedUser: existingUser.rows[0]
@@ -246,17 +340,16 @@ const deleteUserById = async (user_id) => {
 };
 
 module.exports = {
-  getSales,
-  getCustomers,
-  getProducts,
-  getHr,
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUserById,
-  deleteUserById
-};
-</code></pre>
+    getSales,
+    getCustomers,
+    getProducts,
+    getHr,
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUserById,
+    deleteUserById
+};</code></pre>
         </article>
     </section>
 
@@ -266,13 +359,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
