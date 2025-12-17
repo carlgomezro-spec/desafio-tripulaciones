@@ -27,41 +27,97 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Consultas SQL para el módulo Auth
+ * Conjunto de consultas SQL para operaciones de autenticación
  * @module queries/authQueries
+ * @description Consultas SQL específicas para login y verificación de usuarios.
+ * Incluye queries parametrizadas para operaciones seguras de autenticación.
  */
 
+/**
+ * Objeto que contiene las queries SQL para el módulo de autenticación
+ * @type {Object}
+ * @property {string} login - Query para autenticar usuario por email
+ * @property {string} getUserById - Query para obtener usuario por ID (sin password)
+ */
 const queries = {
   /**
-   * Obtener usuario por email (login)
+   * Autenticar usuario por email (para operaciones de login)
+   * @name login
    * @type {string}
+   * @description Query parametrizada para buscar usuario por email.
+   * Retorna todos los campos necesarios para validación de credenciales,
+   * incluyendo el password hash para comparación con bcrypt.
+   * 
+   * Parámetros:
+   * - $1: email (string) - Email del usuario a autenticar
+   * 
+   * Campos retornados:
+   * - user_id (number) - Identificador único del usuario
+   * - role (string) - Rol del usuario ('admin', 'hr', 'mkt', 'user')
+   * - email (string) - Email del usuario
+   * - password (string) - Password hash para comparación con bcrypt
+   * 
+   * @example
+   * // Uso en authModel.login():
+   * const result = await pool.query(queries.login, ['usuario@example.com']);
+   * 
+   * // Resultado posible:
+   * // - Array con un objeto si el usuario existe
+   * // - Array vacío [] si el usuario no existe
+   * 
+   * @important
+   * Esta query debe usarse con bcrypt.compare() para verificar la contraseña.
+   * Nunca se debe comparar passwords directamente en SQL.
    */
   login: `
-    SELECT 
-      user_id, 
-      role, 
-      email, 
-      password
-    FROM users
-    WHERE email = $1
-  `,
-
+  SELECT 
+    user_id, 
+    role, 
+    email, 
+    password
+  FROM users
+  WHERE email = $1
+`,
+  
   /**
-   * Obtener usuario por ID
+   * Obtener información básica de usuario por ID
+   * @name getUserById
    * @type {string}
+   * @description Query parametrizada para obtener datos de usuario por ID.
+   * NO incluye el campo password por seguridad. Usada para verificar
+   * existencia de usuario durante refresh tokens o validaciones.
+   * 
+   * Parámetros:
+   * - $1: user_id (number) - ID del usuario a buscar
+   * 
+   * Campos retornados:
+   * - user_id (number) - Identificador único del usuario
+   * - role (string) - Rol del usuario
+   * - email (string) - Email del usuario
+   * 
+   * @example
+   * // Uso en authModel o durante refresh token:
+   * const result = await pool.query(queries.getUserById, [123]);
+   * 
+   * // Resultado:
+   * // - Array con un objeto si el usuario existe
+   * // - Array vacío [] si el usuario no existe
+   * 
+   * @note
+   * Esta query es diferente de adminQueries.getUserById que SÍ incluye password.
+   * Esta versión es para operaciones donde no se necesita validar password.
    */
   getUserById: `
-    SELECT 
-      user_id,
-      role,
-      email
-    FROM users
-    WHERE user_id = $1
-  `
+  SELECT 
+    user_id,
+    role,
+    email
+  FROM users
+  WHERE user_id = $1
+`
 };
 
-module.exports = queries;
-</code></pre>
+module.exports = queries;</code></pre>
         </article>
     </section>
 
@@ -71,13 +127,13 @@ module.exports = queries;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

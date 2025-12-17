@@ -104,7 +104,7 @@
     
 
     
-    <h4 class="name" id="getCustomersPaginated"><span class="type-signature">(async) </span>getCustomersPaginated<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="executeQuery"><span class="type-signature">(async) </span>executeQuery<span class="signature">(intentData, dateRange<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -112,7 +112,7 @@
 
 
 <div class="description">
-    CUSTOMERS PAGINADOS
+    Servicio que traduce intenciones interpretadas en consultas SQL reales.Soporta diferentes tipos de respuestas: resúmenes (KPI), tablas y texto.Organizado por categorías de datos: empleados, productos, clientes y ventas.
 </div>
 
 
@@ -121,6 +121,262 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>intentData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Datos de intención interpretados por OpenAI
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>intent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Tipo de consulta a ejecutar</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parameters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Parámetros adicionales para la consulta</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dateRange</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Rango de fechas para consultas temporales
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Fecha de inicio (YYYY-MM-DD)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Fecha de fin (YYYY-MM-DD)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -156,7 +412,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mktModel.js.html">mktModel.js</a>, <a href="mktModel.js.html#line36">line 36</a>
+        <a href="services_queryService.js.html">services/queryService.js</a>, <a href="services_queryService.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -179,10 +435,70 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        "dateRange is required for [intent]" - Cuando una consulta necesita rango de fechas
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Resultado estructurado de la consulta
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Consulta de total de empleados (KPI)const result = await executeQuery({ intent: "employee_count" });// Retorna: { type: "summary", content: "...", data: { total: 45 } }</code></pre>
+
+    <pre class="prettyprint"><code>// Consulta de ventas con rango de fechasconst result = await executeQuery(  { intent: "sales_total" },  { from: "2024-01-01", to: "2024-01-31" });// Retorna: { type: "summary", content: "...", data: { total: 12500.50 } }</code></pre>
+
+    <pre class="prettyprint"><code>// Consulta de listado de productos (tabla)const result = await executeQuery({ intent: "product_list" });// Retorna: { type: "table", content: "...", data: { headers: [...], rows: [...] } }</code></pre>
 
 
 
@@ -192,7 +508,7 @@
     
 
     
-    <h4 class="name" id="getProductsPaginated"><span class="type-signature">(async) </span>getProductsPaginated<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="interpretQuestion"><span class="type-signature">(async) </span>interpretQuestion<span class="signature">(question)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -200,7 +516,7 @@
 
 
 <div class="description">
-    PRODUCTS PAGINADOS
+    Utiliza el modelo GPT-4o-mini de OpenAI para interpretar preguntas en lenguaje naturaly convertirlas en una estructura JSON que puede ser procesada por el sistema de consultas.Incluye el contexto del esquema de la base de datos para mejorar la precisión.
 </div>
 
 
@@ -209,6 +525,55 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>question</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Pregunta/consulta en lenguaje natural del usuario</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -244,7 +609,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mktModel.js.html">mktModel.js</a>, <a href="mktModel.js.html#line65">line 65</a>
+        <a href="services_openAiService.js.html">services/openAiService.js</a>, <a href="services_openAiService.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -267,10 +632,95 @@
 
 
 
+<h5>Throws:</h5>
+<ul>
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Error al parsear la respuesta JSON de OpenAI
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">SyntaxError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Error de conexión con la API de OpenAI
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    </ul>
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Objeto con la interpretación estructurada de la consulta
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Entrada: pregunta en lenguaje naturalconst resultado = await interpretQuestion("¿Cuántas ventas hubo en enero?");// Salida: estructura interpretada{  "intent": "sales_report",  "needsDateRange": true,  "parameters": {    "metric": "count",    "timeframe": "monthly",    "month": "january"  },  "confidence": 0.92}</code></pre>
+
+    <pre class="prettyprint"><code>// Otra posible salida:{  "intent": "product_list",  "needsDateRange": false,  "parameters": {    "category": "electronics",    "sortBy": "price",    "order": "desc"  },  "confidence": 0.87}</code></pre>
 
 
 
@@ -280,7 +730,7 @@
     
 
     
-    <h4 class="name" id="getSalesPaginated"><span class="type-signature">(async) </span>getSalesPaginated<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="sendMessage"><span class="type-signature">(async) </span>sendMessage<span class="signature">(req, res)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -288,7 +738,7 @@
 
 
 <div class="description">
-    SALES PAGINADAS
+    Procesa consultas en lenguaje natural, interpreta la intención mediante IA,y ejecuta consultas a la base de datos. Soporta filtrado por rango de fechasy control de acceso por roles.
 </div>
 
 
@@ -297,6 +747,385 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de petición de Express
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Cuerpo de la petición
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Mensaje/consulta del usuario</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dateRange</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Rango de fechas opcional
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>start</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Fecha de inicio (YYYY-MM-DD)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>end</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Fecha de fin (YYYY-MM-DD)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>user</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Usuario autenticado
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>role</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Rol del usuario ('mkt', 'hr', etc.)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Objeto de respuesta de Express</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -332,7 +1161,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="mktModel.js.html">mktModel.js</a>, <a href="mktModel.js.html#line7">line 7</a>
+        <a href="controllers_chatController.js.html">controllers/chatController.js</a>, <a href="controllers_chatController.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -355,10 +1184,97 @@
 
 
 
+<h5>Throws:</h5>
+<ul>
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        403 - Acceso no permitido si el rol no es válido
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        500 - Error interno del servidor
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    </ul>
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Respuesta JSON con el resultado procesado
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// POST /api/chat/send// Body (sin dateRange):{  "message": "¿Cuántas ventas hubo este mes?"}// Respuesta con necesidad de fechas:{  "type": "intent",  "data": {    "intent": "sales_report",    "needsDateRange": true,    "parameters": { "metric": "count" }  }}</code></pre>
+
+    <pre class="prettyprint"><code>// POST /api/chat/send// Body (con dateRange):{  "message": "Ventas por producto",  "dateRange": {    "start": "2024-01-01",    "end": "2024-01-31"  }}// Respuesta con datos:{  "type": "data",  "data": [...],  "columns": ["producto", "ventas"],  "summary": "Total: 150 ventas"}</code></pre>
+
+    <pre class="prettyprint"><code>// Respuesta de error de acceso:{  "type": "text",  "content": "Acceso no permitido"}</code></pre>
 
 
 
@@ -378,13 +1294,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getCustomersPaginated">getCustomersPaginated</a></li><li><a href="global.html#getProductsPaginated">getProductsPaginated</a></li><li><a href="global.html#getSalesPaginated">getSalesPaginated</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:06:07 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

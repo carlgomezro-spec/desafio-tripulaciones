@@ -26,18 +26,31 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Modelo de gestión de empleados
- * @module models/hrModel
- */
-
-const pool = require('../config/db');
+            <pre class="prettyprint source linenums"><code>const pool = require('../config/db');
 const queries = require('../queries/hrQueries');
 
 /**
- * Obtiene todos los empleados
- * @returns {Promise&lt;Array&lt;Object>>} Array de empleados
- * @throws {Error} Si falla la consulta
+ * Modelo de datos para gestión de empleados (Recursos Humanos)
+ * @module models/hrModel
+ * @description Modelo que maneja todas las operaciones CRUD relacionadas con empleados.
+ * Incluye búsqueda por ID, nombre, y operaciones completas de gestión de personal.
+ * Normaliza datos (minúsculas) para consistencia en la base de datos.
+ */
+
+/**
+ * Obtiene todos los empleados del sistema
+ * @async
+ * @function getAllEmployees
+ * @memberof module:models/hrModel
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con datos de todos los empleados
+ * @throws {Error} Error al acceder a la base de datos
+ * @example
+ * // Uso:
+ * const empleados = await getAllEmployees();
+ * // Retorna: [
+ * //   {employee_id: 1, first_name: 'juan', last_name: 'perez', ...},
+ * //   {employee_id: 2, first_name: 'maria', last_name: 'garcia', ...}
+ * // ]
  */
 const getAllEmployees = async () => {
   try {
@@ -49,10 +62,19 @@ const getAllEmployees = async () => {
 };
 
 /**
- * Obtiene un empleado por su ID
- * @param {string|number} employee_id - ID del empleado
- * @returns {Promise&lt;Object>} Empleado encontrado
- * @throws {Error} Si no se encuentra el empleado o falla la consulta
+ * Obtiene un empleado específico por su ID
+ * @async
+ * @function getEmployeeById
+ * @memberof module:models/hrModel
+ * @param {number} employee_id - ID numérico del empleado
+ * @returns {Promise&lt;Object>} Objeto con datos del empleado
+ * @throws {Error} Empleado no encontrado o error de base de datos
+ * @example
+ * // Uso:
+ * const empleado = await getEmployeeById(123);
+ * // Retorna: {employee_id: 123, first_name: 'juan', last_name: 'perez', ...}
+ * 
+ * // Si no existe: throw new Error('Empleado con ID 123 no encontrado')
  */
 const getEmployeeById = async (employee_id) => {  
   try {
@@ -67,10 +89,28 @@ const getEmployeeById = async (employee_id) => {
 };
 
 /**
- * Obtiene empleados por su nombre
- * @param {string} first_name - Primer nombre del empleado
- * @returns {Promise&lt;Array&lt;Object>>} Array de empleados que coinciden con el nombre
- * @throws {Error} Si no se encuentra el empleado o falla la consulta
+ * Busca empleados por su nombre (coincidencia parcial, case-insensitive)
+ * @async
+ * @function getEmployeeByName
+ * @memberof module:models/hrModel
+ * @param {string} first_name - Nombre o parte del nombre a buscar
+ * @returns {Promise&lt;Array&lt;Object>>} Array de objetos con empleados que coinciden
+ * @throws {Error} No se encontraron empleados con ese nombre
+ * @description 
+ * Realiza búsqueda case-insensitive (convierte a minúsculas).
+ * Puede retornar múltiples empleados si hay coincidencias parciales.
+ * 
+ * @example
+ * // Uso:
+ * const empleados = await getEmployeeByName('juan');
+ * // Retorna: [
+ * //   {employee_id: 1, first_name: 'juan', last_name: 'perez'},
+ * //   {employee_id: 2, first_name: 'juan', last_name: 'garcia'}
+ * // ]
+ * 
+ * @example
+ * // Búsqueda parcial:
+ * await getEmployeeByName('car'); // Encontraría 'carlos', 'carmen', etc.
  */
 const getEmployeeByName = async (first_name) => {  
   try {
@@ -85,17 +125,37 @@ const getEmployeeByName = async (first_name) => {
 };
 
 /**
- * Crea un nuevo empleado
- * @param {Object} employeeData - Datos del empleado
- * @param {string|number} employeeData.employee_id
- * @param {string} employeeData.first_name
- * @param {string} employeeData.last_name
- * @param {string} employeeData.email
- * @param {string} employeeData.position
- * @param {string} employeeData.department
- * @param {number|string} employeeData.salary
- * @returns {Promise&lt;Object>} Resultado con mensaje y empleado creado
- * @throws {Error} Si faltan campos o falla la consulta
+ * Crea un nuevo empleado en el sistema
+ * @async
+ * @function createEmployee
+ * @memberof module:models/hrModel
+ * @param {Object} employeeData - Datos del nuevo empleado
+ * @param {number} employeeData.employee_id - ID único del empleado (requerido)
+ * @param {string} employeeData.first_name - Nombre del empleado (requerido)
+ * @param {string} employeeData.last_name - Apellido del empleado (requerido)
+ * @param {string} employeeData.email - Email del empleado (requerido)
+ * @param {string} employeeData.position - Cargo/Posición (requerido)
+ * @param {string} employeeData.department - Departamento (requerido)
+ * @param {number|string} employeeData.salary - Salario (requerido, se convierte a float)
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del empleado creado
+ * @throws {Error} Campos faltantes o error de base de datos
+ * @description 
+ * Todos los campos son obligatorios.
+ * Convierte datos de texto a minúsculas para consistencia.
+ * Convierte salary a número decimal.
+ * 
+ * @example
+ * // Uso:
+ * const resultado = await createEmployee({
+ *   employee_id: 101,
+ *   first_name: 'Carlos',
+ *   last_name: 'Rodríguez',
+ *   email: 'carlos@empresa.com',
+ *   position: 'Desarrollador Senior',
+ *   department: 'Tecnología',
+ *   salary: 55000
+ * });
+ * // Retorna: {message: 'Empleado creado exitosamente', employee: {...}}
  */
 const createEmployee = async (employeeData) => {
   const { employee_id, first_name, last_name, email, position, department, salary } = employeeData;
@@ -125,17 +185,37 @@ const createEmployee = async (employeeData) => {
 };
 
 /**
- * Actualiza un empleado por su ID
- * @param {string|number} employee_id - ID del empleado
- * @param {Object} employeeData - Datos a actualizar
- * @param {string} [employeeData.first_name]
- * @param {string} [employeeData.last_name]
- * @param {string} [employeeData.email]
- * @param {string} [employeeData.position]
- * @param {string} [employeeData.department]
- * @param {number|string} [employeeData.salary]
- * @returns {Promise&lt;Object>} Resultado con mensaje y empleado actualizado
- * @throws {Error} Si no se encuentra el empleado o falla la consulta
+ * Actualiza un empleado existente por su ID
+ * @async
+ * @function updateEmployeeById
+ * @memberof module:models/hrModel
+ * @param {number} employee_id - ID del empleado a actualizar
+ * @param {Object} employeeData - Campos a actualizar (todos opcionales)
+ * @param {string} [employeeData.first_name] - Nuevo nombre
+ * @param {string} [employeeData.last_name] - Nuevo apellido
+ * @param {string} [employeeData.email] - Nuevo email
+ * @param {string} [employeeData.position] - Nueva posición
+ * @param {string} [employeeData.department] - Nuevo departamento
+ * @param {number|string} [employeeData.salary] - Nuevo salario
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del empleado actualizado
+ * @throws {Error} Empleado no encontrado o error de base de datos
+ * @description 
+ * Actualización parcial: solo los campos proporcionados se actualizan.
+ * Campos de texto se convierten a minúsculas.
+ * Salary se convierte a float si se proporciona.
+ * Mantiene valores actuales para campos no proporcionados.
+ * 
+ * @example
+ * // Actualizar solo salario:
+ * await updateEmployeeById(123, { salary: 60000 });
+ * 
+ * @example
+ * // Actualizar múltiples campos:
+ * await updateEmployeeById(123, { 
+ *   position: 'Gerente de Proyecto',
+ *   department: 'Innovación',
+ *   salary: 65000
+ * });
  */
 const updateEmployeeById = async (employee_id, employeeData) => {  
   try {
@@ -175,10 +255,20 @@ const updateEmployeeById = async (employee_id, employeeData) => {
 };
 
 /**
- * Elimina un empleado por su ID
- * @param {string|number} employee_id - ID del empleado
- * @returns {Promise&lt;Object>} Resultado con mensaje y empleado eliminado
- * @throws {Error} Si no se encuentra el empleado o falla la consulta
+ * Elimina un empleado del sistema por su ID
+ * @async
+ * @function deleteEmployeeById
+ * @memberof module:models/hrModel
+ * @param {number} employee_id - ID del empleado a eliminar
+ * @returns {Promise&lt;Object>} Objeto con mensaje y datos del empleado eliminado
+ * @throws {Error} Empleado no encontrado o error de base de datos
+ * @example
+ * // Uso:
+ * const resultado = await deleteEmployeeById(123);
+ * // Retorna: {
+ * //   message: 'Empleado con ID 123 eliminado exitosamente',
+ * //   deletedEmployee: {employee_id: 123, first_name: 'juan', ...}
+ * // }
  */
 const deleteEmployeeById = async (employee_id) => {  
   try {
@@ -199,14 +289,13 @@ const deleteEmployeeById = async (employee_id) => {
 };
 
 module.exports = {
-  getAllEmployees,
-  getEmployeeById,
-  getEmployeeByName,
-  createEmployee,
-  updateEmployeeById,
-  deleteEmployeeById
-};
-</code></pre>
+    getAllEmployees,
+    getEmployeeById,
+    getEmployeeByName,
+    createEmployee,
+    updateEmployeeById,
+    deleteEmployeeById
+};</code></pre>
         </article>
     </section>
 
@@ -216,13 +305,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

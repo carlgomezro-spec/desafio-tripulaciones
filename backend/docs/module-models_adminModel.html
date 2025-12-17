@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Modelo de administración de usuarios y datos de ventas, clientes, productos y RRHH</div>
+            <div class="description">Modelo que maneja todas las operaciones CRUD y consultasadministrativas relacionadas con ventas, clientes, productos, RRHH y usuarios.Incluye validaciones de datos y manejo de contraseñas con bcrypt.</div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line1">line 1</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -144,7 +144,7 @@
     
 
     
-    <h4 class="name" id="~createUser"><span class="type-signature">(async, inner) </span>createUser<span class="signature">(userData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".createUser"><span class="type-signature">(async, static) </span>createUser<span class="signature">(userData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -152,7 +152,7 @@
 
 
 <div class="description">
-    Crea un nuevo usuario
+    Crea un nuevo usuario en el sistema
 </div>
 
 
@@ -204,7 +204,7 @@
 
             
 
-            <td class="description last">Datos del usuario
+            <td class="description last">Datos del nuevo usuario
                 <h6>Properties</h6>
                 
 
@@ -246,7 +246,7 @@
 
             
 
-            <td class="description last">Rol del usuario (admin, hr, mkt)</td>
+            <td class="description last">Rol del usuario ('admin', 'hr', 'mkt')</td>
         </tr>
 
     
@@ -292,7 +292,7 @@
 
             
 
-            <td class="description last">Contraseña del usuario</td>
+            <td class="description last">Contraseña del usuario (se hashea automáticamente)</td>
         </tr>
 
     
@@ -340,7 +340,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line107">line 107</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line145">line 145</a>
     </li></ul></dd>
     
 
@@ -370,7 +370,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si los datos son inválidos o falla la consulta
+        Campos faltantes, rol inválido o error de base de datos
         </div>
     </dt>
     <dd></dd>
@@ -398,7 +398,7 @@
 
         
 <div class="param-desc">
-    Resultado con mensaje y usuario creado
+    Objeto con mensaje y datos del usuario creado
 </div>
 
 
@@ -420,6 +420,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const resultado = await createUser({  role: 'admin',  email: 'nuevo@example.com',  password: 'Password123'});// Retorna: {message: 'Usuario creado exitosamente', user: {...}}</code></pre>
+
+
 
         
             
@@ -427,7 +432,7 @@
     
 
     
-    <h4 class="name" id="~deleteUserById"><span class="type-signature">(async, inner) </span>deleteUserById<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".deleteUserById"><span class="type-signature">(async, static) </span>deleteUserById<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -435,7 +440,7 @@
 
 
 <div class="description">
-    Elimina un usuario por su ID
+    Elimina un usuario del sistema por su ID
 </div>
 
 
@@ -477,9 +482,6 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
 <span class="param-type">number</span>
 
 
@@ -490,7 +492,7 @@
 
             
 
-            <td class="description last">ID del usuario</td>
+            <td class="description last">ID del usuario a eliminar</td>
         </tr>
 
     
@@ -531,7 +533,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line202">line 202</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line282">line 282</a>
     </li></ul></dd>
     
 
@@ -561,7 +563,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si el usuario no existe o falla la consulta
+        Usuario no encontrado o error de base de datos
         </div>
     </dt>
     <dd></dd>
@@ -589,7 +591,7 @@
 
         
 <div class="param-desc">
-    Resultado con mensaje y usuario eliminado
+    Objeto con mensaje y datos del usuario eliminado
 </div>
 
 
@@ -611,6 +613,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const resultado = await deleteUserById(123);// Retorna: {message: 'Usuario con ID 123 eliminado exitosamente', deletedUser: {...}}</code></pre>
+
+
 
         
             
@@ -618,7 +625,7 @@
     
 
     
-    <h4 class="name" id="~getAllUsers"><span class="type-signature">(async, inner) </span>getAllUsers<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id=".getAllUsers"><span class="type-signature">(async, static) </span>getAllUsers<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -626,7 +633,7 @@
 
 
 <div class="description">
-    Obtiene todos los usuarios
+    Obtiene todos los usuarios del sistema
 </div>
 
 
@@ -670,7 +677,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line71">line 71</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -700,7 +707,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si falla la consulta
+        Error al acceder a la base de datos
         </div>
     </dt>
     <dd></dd>
@@ -728,7 +735,7 @@
 
         
 <div class="param-desc">
-    Array de usuarios
+    Array de objetos con datos de usuarios
 </div>
 
 
@@ -750,6 +757,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const usuarios = await getAllUsers();// Retorna: [{user_id: 1, email: 'user@example.com', role: 'admin', ...}, ...]</code></pre>
+
+
 
         
             
@@ -757,7 +769,7 @@
     
 
     
-    <h4 class="name" id="~getCustomers"><span class="type-signature">(async, inner) </span>getCustomers<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id=".getCustomers"><span class="type-signature">(async, static) </span>getCustomers<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -765,7 +777,7 @@
 
 
 <div class="description">
-    Obtiene todos los clientes
+    Obtiene todos los clientes del sistema
 </div>
 
 
@@ -809,7 +821,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line29">line 29</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -839,7 +851,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si falla la consulta
+        Error al acceder a la base de datos
         </div>
     </dt>
     <dd></dd>
@@ -867,7 +879,7 @@
 
         
 <div class="param-desc">
-    Array de clientes
+    Array de objetos con datos de clientes
 </div>
 
 
@@ -889,6 +901,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const clientes = await getCustomers();// Retorna: [{customer_id: 1, name: 'Cliente A', ...}, ...]</code></pre>
+
+
 
         
             
@@ -896,7 +913,7 @@
     
 
     
-    <h4 class="name" id="~getHr"><span class="type-signature">(async, inner) </span>getHr<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id=".getHr"><span class="type-signature">(async, static) </span>getHr<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -904,7 +921,7 @@
 
 
 <div class="description">
-    Obtiene todos los empleados del departamento de RRHH
+    Obtiene todos los empleados de recursos humanos
 </div>
 
 
@@ -948,7 +965,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line57">line 57</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -978,7 +995,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si falla la consulta
+        Error al acceder a la base de datos
         </div>
     </dt>
     <dd></dd>
@@ -1006,7 +1023,7 @@
 
         
 <div class="param-desc">
-    Array de empleados
+    Array de objetos con datos de empleados de RRHH
 </div>
 
 
@@ -1028,6 +1045,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const empleados = await getHr();// Retorna: [{employee_id: 1, name: 'Empleado A', department: 'RRHH', ...}, ...]</code></pre>
+
+
 
         
             
@@ -1035,7 +1057,7 @@
     
 
     
-    <h4 class="name" id="~getProducts"><span class="type-signature">(async, inner) </span>getProducts<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id=".getProducts"><span class="type-signature">(async, static) </span>getProducts<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -1043,7 +1065,7 @@
 
 
 <div class="description">
-    Obtiene todos los productos
+    Obtiene todos los productos del sistema
 </div>
 
 
@@ -1087,7 +1109,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line43">line 43</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -1117,7 +1139,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si falla la consulta
+        Error al acceder a la base de datos
         </div>
     </dt>
     <dd></dd>
@@ -1145,7 +1167,7 @@
 
         
 <div class="param-desc">
-    Array de productos
+    Array de objetos con datos de productos
 </div>
 
 
@@ -1167,6 +1189,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const productos = await getProducts();// Retorna: [{product_id: 1, name: 'Producto A', price: 50, ...}, ...]</code></pre>
+
+
 
         
             
@@ -1174,7 +1201,7 @@
     
 
     
-    <h4 class="name" id="~getSales"><span class="type-signature">(async, inner) </span>getSales<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id=".getSales"><span class="type-signature">(async, static) </span>getSales<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -1182,7 +1209,7 @@
 
 
 <div class="description">
-    Obtiene todas las ventas
+    Obtiene todas las ventas del sistema
 </div>
 
 
@@ -1226,7 +1253,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line15">line 15</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -1256,7 +1283,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si falla la consulta
+        Error al acceder a la base de datos
         </div>
     </dt>
     <dd></dd>
@@ -1284,7 +1311,7 @@
 
         
 <div class="param-desc">
-    Array de ventas
+    Array de objetos con datos de ventas
 </div>
 
 
@@ -1306,6 +1333,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const ventas = await getSales();// Retorna: [{sale_id: 1, total: 100.50, ...}, ...]</code></pre>
+
+
 
         
             
@@ -1313,7 +1345,7 @@
     
 
     
-    <h4 class="name" id="~getUserById"><span class="type-signature">(async, inner) </span>getUserById<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".getUserById"><span class="type-signature">(async, static) </span>getUserById<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1321,7 +1353,7 @@
 
 
 <div class="description">
-    Obtiene un usuario por su ID
+    Obtiene un usuario específico por su ID
 </div>
 
 
@@ -1363,9 +1395,6 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
 <span class="param-type">number</span>
 
 
@@ -1376,7 +1405,7 @@
 
             
 
-            <td class="description last">ID del usuario</td>
+            <td class="description last">ID del usuario a buscar</td>
         </tr>
 
     
@@ -1417,7 +1446,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line86">line 86</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -1447,7 +1476,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si no se encuentra el usuario o falla la consulta
+        Usuario no encontrado o error de base de datos
         </div>
     </dt>
     <dd></dd>
@@ -1475,7 +1504,7 @@
 
         
 <div class="param-desc">
-    Objeto usuario
+    Objeto con datos del usuario
 </div>
 
 
@@ -1497,6 +1526,11 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso:const usuario = await getUserById(123);// Retorna: {user_id: 123, email: 'user@example.com', role: 'admin', ...}// Si no existe: throw new Error('Usuario con ID 123 no encontrado')</code></pre>
+
+
 
         
             
@@ -1504,7 +1538,7 @@
     
 
     
-    <h4 class="name" id="~updateUserById"><span class="type-signature">(async, inner) </span>updateUserById<span class="signature">(user_id, userData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+    <h4 class="name" id=".updateUserById"><span class="type-signature">(async, static) </span>updateUserById<span class="signature">(user_id, userData)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
     
 
     
@@ -1512,7 +1546,7 @@
 
 
 <div class="description">
-    Actualiza un usuario por su ID
+    Actualización parcial: solo los campos proporcionados se actualizan.Contraseña: si se proporciona string vacío (""), se mantiene la contraseña actual.Si se proporciona nueva contraseña, se hashea automáticamente.
 </div>
 
 
@@ -1554,9 +1588,6 @@
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
 <span class="param-type">number</span>
 
 
@@ -1567,7 +1598,7 @@
 
             
 
-            <td class="description last">ID del usuario</td>
+            <td class="description last">ID del usuario a actualizar</td>
         </tr>
 
     
@@ -1590,7 +1621,7 @@
 
             
 
-            <td class="description last">Datos a actualizar
+            <td class="description last">Campos a actualizar (todos opcionales)
                 <h6>Properties</h6>
                 
 
@@ -1644,7 +1675,7 @@
 
             
 
-            <td class="description last">Nuevo rol</td>
+            <td class="description last">Nuevo rol del usuario</td>
         </tr>
 
     
@@ -1677,7 +1708,7 @@
 
             
 
-            <td class="description last">Nuevo email</td>
+            <td class="description last">Nuevo email del usuario</td>
         </tr>
 
     
@@ -1710,7 +1741,7 @@
 
             
 
-            <td class="description last">Nueva contraseña</td>
+            <td class="description last">Nueva contraseña (cadena vacía mantiene la actual)</td>
         </tr>
 
     
@@ -1758,7 +1789,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line149">line 149</a>
+        <a href="models_adminModel.js.html">models/adminModel.js</a>, <a href="models_adminModel.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -1788,7 +1819,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si el usuario no existe, los datos son inválidos o falla la consulta
+        Usuario no encontrado, rol inválido o error de base de datos
         </div>
     </dt>
     <dd></dd>
@@ -1816,7 +1847,7 @@
 
         
 <div class="param-desc">
-    Resultado con mensaje y usuario actualizado
+    Objeto con mensaje y datos del usuario actualizado
 </div>
 
 
@@ -1838,6 +1869,15 @@
 
 
 
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Actualizar solo el rol:await updateUserById(123, { role: 'hr' });</code></pre>
+
+    <pre class="prettyprint"><code>// Actualizar email y contraseña:await updateUserById(123, {   email: 'nuevo@email.com',  password: 'NuevaPass123' });</code></pre>
+
+    <pre class="prettyprint"><code>// Mantener contraseña actual:await updateUserById(123, {   email: 'nuevo@email.com',  password: ""  // ← cadena vacía = mantener contraseña});</code></pre>
+
+
 
         
     
@@ -1855,13 +1895,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

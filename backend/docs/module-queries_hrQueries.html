@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">Consultas SQL para el módulo HR</div>
+            <div class="description">Consultas SQL para operaciones CRUD completas de empleados.Incluye búsqueda por ID, nombre, y operaciones con RETURNING clause paraconfirmación de operaciones. Todas las queries están parametrizadas.</div>
         
 
         
@@ -134,6 +134,713 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~createEmployee"><span class="type-signature">(inner) </span>createEmployee<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query de inserción con RETURNING clause.Crea un nuevo registro de empleado con todos los campos requeridos.Retorna los datos del empleado creado para confirmación.Parámetros:- $1: employee_id (number) - ID único del empleado- $2: first_name (string) - Nombre (convertido a minúsculas en modelo)- $3: last_name (string) - Apellido (convertido a minúsculas en modelo)- $4: email (string) - Email (convertido a minúsculas en modelo)- $5: position (string) - Cargo (convertido a minúsculas en modelo)- $6: department (string) - Departamento (convertido a minúsculas en modelo)- $7: salary (number) - Salario (convertido a float en modelo)Campos retornados: Mismos que getAllEmployees
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en hrModel.createEmployee():const result = await pool.query(queries.createEmployee, [  101, 'carlos', 'rodriguez', 'carlos@empresa.com',  'desarrollador', 'tecnologia', 55000]);// Retorna array con datos del empleado creado</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~deleteEmployeeById"><span class="type-signature">(inner) </span>deleteEmployeeById<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query de eliminación con RETURNING clause.Elimina el registro del empleado y retorna sus datos paraconfirmación y posible registro/log.Parámetros:- $1: employee_id (number) - ID del empleado a eliminarCampos retornados: Mismos que getAllEmployees
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line221">line 221</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en hrModel.deleteEmployeeById():const result = await pool.query(queries.deleteEmployeeById, [101]);// Elimina empleado 101 y retorna sus datos (para confirmación)</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getAllEmployees"><span class="type-signature">(inner) </span>getAllEmployees<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query completa para listar todos los empleados.Ordena por departamento, luego apellido, luego nombre para agrupación lógica.Campos retornados:- employee_id (number) - Identificador único- first_name (string) - Nombre- last_name (string) - Apellido- email (string) - Email corporativo- position (string) - Cargo/posición- department (string) - Departamento- salary (number) - Salario
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en hrModel.getAllEmployees():const result = await pool.query(queries.getAllEmployees);// Retorna array con todos los empleados ordenados</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getEmployeeById"><span class="type-signature">(inner) </span>getEmployeeById<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query parametrizada para buscar empleado por ID.Retorna todos los campos del empleado. Usada para verificaciónde existencia y obtención de datos individuales.Parámetros:- $1: employee_id (number) - ID del empleado a buscarCampos retornados: Mismos que getAllEmployees
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en hrModel.getEmployeeById():const result = await pool.query(queries.getEmployeeById, [101]);// Retorna array con el empleado 101 o array vacío si no existe</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getEmployeeByName"><span class="type-signature">(inner) </span>getEmployeeByName<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query para búsqueda flexible de empleados por nombre.Usa LIKE con LOWER() para búsqueda case-insensitive y parcial.Busca tanto en first_name como en last_name.Parámetros:- $1: searchTerm (string) - Término de búsqueda (ej: 'juan', 'car%')Nota: El modelo convierte el término a minúsculas antes de pasarlo.Para búsqueda parcial, agregar '%' al término (ej: 'car%' para 'carlos', 'carmen')Campos retornados: Mismos que getAllEmployees
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Búsqueda exacta (convertida a minúsculas en el modelo):const result = await pool.query(queries.getEmployeeByName, ['juan']);// Encuentra 'Juan', 'JUAN', 'juan', etc.</code></pre>
+
+    <pre class="prettyprint"><code>// Búsqueda parcial:const result = await pool.query(queries.getEmployeeByName, ['car%']);// Encuentra 'Carlos', 'Carmen', 'Carolina', etc.</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~queries"><span class="type-signature">(inner, constant) </span>queries<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    Objeto que contiene las queries SQL para el módulo de Recursos Humanos
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>getAllEmployees</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para obtener todos los empleados</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getEmployeeById</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para obtener empleado por ID</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getEmployeeByName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para buscar empleados por nombre</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>createEmployee</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para crear nuevo empleado</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateEmployeeById</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para actualizar empleado existente</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>deleteEmployeeById</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para eliminar empleado</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~updateEmployeeById"><span class="type-signature">(inner) </span>updateEmployeeById<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query de actualización completa con RETURNING clause.Actualiza todos los campos del empleado. En el modelo se manejaactualización parcial manteniendo valores actuales para campos no proporcionados.Parámetros:- $1: first_name (string) - Nuevo nombre- $2: last_name (string) - Nuevo apellido- $3: email (string) - Nuevo email- $4: position (string) - Nueva posición- $5: department (string) - Nuevo departamento- $6: salary (number) - Nuevo salario- $7: employee_id (number) - ID del empleado a actualizarCampos retornados: Mismos que getAllEmployees
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_hrQueries.js.html">queries/hrQueries.js</a>, <a href="queries_hrQueries.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en hrModel.updateEmployeeById():const result = await pool.query(queries.updateEmployeeById, [  'carlos', 'rodriguez', 'carlos.nuevo@empresa.com',  'desarrollador senior', 'innovacion', 60000, 101]);// Retorna array con datos actualizados del empleado 101</code></pre>
+
+
+
+        
+    
 
     
 
@@ -150,13 +857,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

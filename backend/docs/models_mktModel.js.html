@@ -26,21 +26,50 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Modelo de marketing
- * Gestiona ventas, clientes y productos con paginación
- * @module models/mktModel
- */
-
-const pool = require('../config/db');
+            <pre class="prettyprint source linenums"><code>const pool = require('../config/db');
 const queries = require('../queries/mktQueries');
 
 /**
- * Obtiene ventas paginadas
- * @param {number} [page=1] - Número de página
+ * Modelo de datos para operaciones de Marketing con paginación
+ * @module models/mktModel
+ * @description Modelo que maneja consultas paginadas para ventas, clientes y productos.
+ * Implementa paginación eficiente con conteo total de registros para interfaces de usuario.
+ */
+
+/**
+ * Obtiene ventas paginadas del sistema
+ * @async
+ * @function getSalesPaginated
+ * @memberof module:models/mktModel
+ * @param {number} [page=1] - Número de página (1-indexed)
  * @param {number} [limit=10] - Número de elementos por página
- * @returns {Promise&lt;Object>} Objeto con `data` y `pagination`
- * @throws {Error} Si falla la consulta
+ * @returns {Promise&lt;Object>} Objeto con datos de ventas y metadatos de paginación
+ * @throws {Error} Error al acceder a la base de datos
+ * @description 
+ * Implementa paginación eficiente con dos consultas:
+ * 1. Obtiene los registros de la página actual (con LIMIT y OFFSET)
+ * 2. Cuenta el total de registros para calcular total de páginas
+ * 
+ * Cálculo: offset = (page - 1) * limit
+ * 
+ * @example
+ * // Obtener primera página con 10 elementos por defecto:
+ * const resultado = await getSalesPaginated();
+ * // Retorna: {
+ * //   data: [...], // Array con hasta 10 ventas
+ * //   pagination: {
+ * //     page: 1,
+ * //     limit: 10,
+ * //     total: 150,      // Total de ventas en el sistema
+ * //     totalPages: 15   // Math.ceil(150 / 10)
+ * //   }
+ * // }
+ * 
+ * @example
+ * // Obtener página 3 con 20 elementos por página:
+ * const resultado = await getSalesPaginated(3, 20);
+ * // offset = (3-1)*20 = 40 → salta primeros 40 registros
+ * // Retorna 20 registros a partir del registro 41
  */
 const getSalesPaginated = async (page = 1, limit = 10) => {
   try {
@@ -69,11 +98,23 @@ const getSalesPaginated = async (page = 1, limit = 10) => {
 };
 
 /**
- * Obtiene clientes paginados
- * @param {number} [page=1] - Número de página
+ * Obtiene clientes paginados del sistema
+ * @async
+ * @function getCustomersPaginated
+ * @memberof module:models/mktModel
+ * @param {number} [page=1] - Número de página (1-indexed)
  * @param {number} [limit=10] - Número de elementos por página
- * @returns {Promise&lt;Object>} Objeto con `data` y `pagination`
- * @throws {Error} Si falla la consulta
+ * @returns {Promise&lt;Object>} Objeto con datos de clientes y metadatos de paginación
+ * @throws {Error} Error al acceder a la base de datos
+ * @description 
+ * Misma estructura de paginación que getSalesPaginated pero para clientes.
+ * Útil para interfaces que muestran listados largos de clientes.
+ * 
+ * @example
+ * // Obtener segunda página con 15 clientes:
+ * const resultado = await getCustomersPaginated(2, 15);
+ * // offset = (2-1)*15 = 15 → salta primeros 15 clientes
+ * // Retorna 15 clientes a partir del registro 16
  */
 const getCustomersPaginated = async (page = 1, limit = 10) => {
   try {
@@ -102,11 +143,23 @@ const getCustomersPaginated = async (page = 1, limit = 10) => {
 };
 
 /**
- * Obtiene productos paginados
- * @param {number} [page=1] - Número de página
+ * Obtiene productos paginados del sistema
+ * @async
+ * @function getProductsPaginated
+ * @memberof module:models/mktModel
+ * @param {number} [page=1] - Número de página (1-indexed)
  * @param {number} [limit=10] - Número de elementos por página
- * @returns {Promise&lt;Object>} Objeto con `data` y `pagination`
- * @throws {Error} Si falla la consulta
+ * @returns {Promise&lt;Object>} Objeto con datos de productos y metadatos de paginación
+ * @throws {Error} Error al acceder a la base de datos
+ * @description 
+ * Paginación para catálogo de productos. Incluye información como:
+ * - Nombre, categoría, precio, stock, etc.
+ * - Metadatos para navegación (página actual, total de páginas)
+ * 
+ * @example
+ * // Obtener productos para interfaz de catálogo:
+ * const resultado = await getProductsPaginated(1, 12); // 12 productos por página
+ * // Ideal para grids de productos (3x4, 4x3, etc.)
  */
 const getProductsPaginated = async (page = 1, limit = 10) => {
   try {
@@ -138,8 +191,7 @@ module.exports = {
   getSalesPaginated,
   getCustomersPaginated,
   getProductsPaginated,
-};
-</code></pre>
+};</code></pre>
         </article>
     </section>
 
@@ -149,13 +201,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_admin.html">controllers/admin</a></li><li><a href="module-controllers_auth.html">controllers/auth</a></li><li><a href="module-controllers_hr.html">controllers/hr</a></li><li><a href="module-controllers_message.html">controllers/message</a></li><li><a href="module-controllers_mkt.html">controllers/mkt</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_handleValidationErrors.html">middlewares/handleValidationErrors</a></li><li><a href="module-middlewares_manage404.html">middlewares/manage404</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Dec 16 2025 16:43:49 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>

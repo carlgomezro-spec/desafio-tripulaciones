@@ -1,13 +1,9 @@
 import api from "./api_chat";
 
-export const sendChatMessage = async (message, sessionId = "default-session") => {
+export const sendChatMessage = async (message) => {
   try {
     const body = {
       message,
-      session_id: sessionId,
-      user_id: 1,
-      role: "user",
-      model: "llama-3",
     };
 
     const response = await api.post("ask", body);
