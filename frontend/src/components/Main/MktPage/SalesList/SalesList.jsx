@@ -29,7 +29,7 @@ const SalesList = () => {
       .finally(() => setLoading(false));
   }, [page]);
 
-  if (loading) return <p className="mkt-loading">⏳ Cargando ventas...</p>;
+  if (loading) return <p className="mkt-loading">Cargando...</p>;
   if (error) return <p className="mkt-error">{error}</p>;
   if (!pagination) return null;
 

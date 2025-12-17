@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createEmployee } from "../../../../services/hrservice";
 import "./AddEmployee.css";
-
+import Swal from "sweetalert2";
 
 const AddEmployee = ({ onSuccess, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -53,7 +53,17 @@ const AddEmployee = ({ onSuccess, onCancel }) => {
 
     const validationError = validate();
     if (validationError) {
-      setError(validationError);
+      Swal.fire({
+        title: "Error de validación",
+        text: validationError,
+        icon: "warning",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#f59e0b",
+        background: "#1f2937",
+        color: "#f9fafb",
+        width: "90%",
+        maxWidth: "400px",
+      });
       return;
     }
 
@@ -68,11 +78,31 @@ const AddEmployee = ({ onSuccess, onCancel }) => {
       setLoading(true);
       setError(null);
       await createEmployee(payload);
-      onSuccess(); // vuelve al listado + refresca
+     Swal.fire({
+        title: "Empleado creado",
+        text: "El empleado se ha creado correctamente",
+        icon: "success",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#10b981",
+        background: "#1f2937",
+        color: "#f9fafb",
+        width: "90%",
+        maxWidth: "400px",
+      }).then(() => {
+        onSuccess(); // vuelve al listado + refresca
+      });
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Error al crear empleado"
-      );
+      Swal.fire({
+        title: "Error",
+        text: err.response?.data?.message || "Error al crear el empleado",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#ef4444",
+        background: "#1f2937",
+        color: "#f9fafb",
+        width: "90%",
+        maxWidth: "400px",
+      });
     } finally {
       setLoading(false);
     }

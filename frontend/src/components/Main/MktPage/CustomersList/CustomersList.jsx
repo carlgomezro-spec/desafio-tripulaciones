@@ -25,7 +25,7 @@ const CustomersList = () => {
       .finally(() => setLoading(false));
   }, [page]);
 
-  if (loading) return <p className="mkt-loading">⏳ Cargando clientes...</p>;
+  if (loading) return <p className="mkt-loading"></p>;
   if (error) return <p className="mkt-error">{error}</p>;
   if (!pagination) return null;
 

@@ -7,6 +7,7 @@ import "./MktPage.css";
 import ChatBox2 from "../../Chat/Chatbox/Chatbox2";
 
 
+
 const MktPage = () => {
   const [showSalesList, setShowSalesList] = useState(false); // controla qué mostrar SalesList/SalesChart
   

@@ -110,7 +110,7 @@ const ProductsList = () => {
       .finally(() => setLoading(false));
   }, [page]);
 
-  if (loading) return <p className="mkt-loading">⏳ Cargando análisis de productos...</p>;
+  if (loading) return <p className="mkt-loading">Cargando...</p>;
   if (error) return <p className="mkt-error">{error}</p>;
   if (!pagination) return null;
 

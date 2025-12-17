@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { getSalesPaginated } from "../../../../services/mktServices";
 import './SalesChart.css';
+import { Circles } from 'react-loader-spinner';
 
 const SalesChart = ({ onViewSalesList, showViewTableButton = false }) => {
   const [data, setData] = useState([]);
@@ -30,7 +31,21 @@ useEffect(() => {
     .finally(() => setLoading(false));
 }, []);
 
-  if (loading) return <p>⏳ Cargando resumen de ventas...</p>;
+  if (loading) return (
+        <div style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "50vh"
+    }}>
+      <Circles
+        height="80"
+        width="80"
+        color="#606062ff"
+        ariaLabel="loading"
+      />
+    </div>
+  )
 
   // Tooltip personalizado
   const CustomTooltip = ({ active, payload }) => {

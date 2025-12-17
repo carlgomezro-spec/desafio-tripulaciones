@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { getAllEmployees,deleteEmployeeById} from "../../../services/hrservice.js";
 import AddEmployee from "./AddEmployee/AddEmloyee.jsx";
 import "./HrPage.css";
+import Swal from "sweetalert2";
+import { Circles } from 'react-loader-spinner';
 
 const HrPage = () => {
   const [employees, setEmployees] = useState([]);
@@ -26,17 +28,71 @@ const HrPage = () => {
   }, []);
 
   const handleDelete = async (employee_id) => {
-    if (!window.confirm("¿Eliminar empleado?")) return;
+    // if (!window.confirm("¿Eliminar empleado?")) return;
+     // Confirmación con SweetAlert
+    const result = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    background: "#1f2937",          // fondo dark
+    color: "#f9fafb",               // texto claro
+    customClass: {
+      title: "swal2-title-custom",
+      popup: "swal2-popup-custom"
+    },
+    // Responsive automatico
+    width: "90%",
+    maxWidth: "500px"
+  });
+
+  if (!result.isConfirmed) return;
 
     try {
       await deleteEmployeeById(employee_id);
+      // Éxito
+      Swal.fire({
+      title: "Eliminado",
+      text: "El empleado fue eliminado correctamente",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+      position: "center", 
+
+    });
       fetchEmployees();
-    } catch {
-      alert("Error deleting employee");
+    } catch(err) {
+      // Error
+      Swal.fire({
+      title: "Error",
+      text: err.msg || "Error al eliminar el empleado",
+      icon: "error",
+    });
     }
   };
 
-  if (loading) return <p>Cargando empleados...</p>;
+  // if (loading) return <p>Cargando empleados...</p>;
+  if (loading) {
+  return (
+    <div style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "50vh"
+    }}>
+      <Circles
+        height="80"
+        width="80"
+        color="#606062ff"
+        ariaLabel="loading"
+      />
+    </div>
+  );
+}
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
