@@ -10,6 +10,10 @@ La aplicación sigue una **arquitectura Cliente-Servidor**, separando claramente
 
 ---
 
+![MockUp](assets/Mockup.png)
+
+
+
 ## 🏗️ Arquitectura General
 
 ### Modelo Cliente-Servidor
@@ -178,6 +182,10 @@ VITE_API_LLM=
 ```
 ### 5. Iniciar el servidor:
 ```bash
-- npm run dev
+npm run dev
 ```
 
+## Autores ✍🏽:
+- Cristina Gonzalez Calvín: https://github.com/crisglezcal
+- Carlos Gómez Rodríguez: https://github.com/carlgomezro-spec
+- Lucía Aroca Solís : https://github.com/luciaaroca
