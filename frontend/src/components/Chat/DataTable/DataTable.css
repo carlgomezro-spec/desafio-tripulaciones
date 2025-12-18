@@ -1,0 +1,11 @@
+.chat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.chat-table th,
+.chat-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+}

@@ -1,0 +1,19 @@
+.date-picker {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.date-picker input {
+  flex: 1;
+}
+
+.date-picker button {
+  background: #e60012;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: validators/userValidator.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: validators/userValidator.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { body, param } = require('express-validator');
+
+/**
+ * Roles de usuario válidos en el sistema
+ * @type {Array&lt;string>}
+ * @constant
+ * @private
+ */
+const validRoles = ['admin', 'hr', 'mkt'];
+
+/**
+ * Expresión regular para validar formato de email
+ * @type {RegExp}
+ * @constant
+ * @private
+ */
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Expresión regular para validar fortaleza de contraseña
+ * @type {RegExp}
+ * @constant
+ * @private
+ * @description Valida que la contraseña tenga:
+ * - 8-16 caracteres de longitud
+ * - Al menos una letra mayúscula
+ * - Al menos una letra minúscula
+ * - Al menos un número
+ */
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,16}$/;
+
+/**
+ * Validador para la creación de nuevos usuarios
+ * @module validators/userValidators
+ * @description Define las reglas de validación para crear un nuevo usuario en el sistema.
+ * Valida rol, email y contraseña con requisitos específicos.
+ * 
+ * @type {Array}
+ * 
+ * @example
+ * // Uso en rutas:
+ * router.post('/users', createUserValidator, adminController.createUser);
+ * 
+ * // Body requerido:
+ * {
+ *   "role": "admin",
+ *   "email": "usuario@example.com",
+ *   "password": "Password123"
+ * }
+ */
+exports.createUserValidator = [
+  /**
+   * Valida el campo 'role' durante la creación de usuario
+   * @name validateRoleCreate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo obligatorio
+   * - Debe ser uno de: 'admin', 'hr', 'mkt' (case insensitive)
+   */
+  body('role')
+    .notEmpty().withMessage('El rol es obligatorio')
+    .custom(role => validRoles.includes(role.toLowerCase()))
+    .withMessage(`Rol inválido. Los permitidos son: ${validRoles.join(', ')}`),
+  
+  /**
+   * Valida el campo 'email' durante la creación de usuario
+   * @name validateEmailCreate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo obligatorio
+   * - Debe tener formato de email válido
+   * - Usa regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+   */
+  body('email')
+    .notEmpty().withMessage('El email es obligatorio')
+    .matches(emailRegex).withMessage('Email inválido'),
+  
+  /**
+   * Valida el campo 'password' durante la creación de usuario
+   * @name validatePasswordCreate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo obligatorio
+   * - Debe cumplir con los requisitos de seguridad:
+   *   - 8-16 caracteres
+   *   - Al menos una mayúscula
+   *   - Al menos una minúscula
+   *   - Al menos un número
+   */
+  body('password')
+    .notEmpty().withMessage('La contraseña es obligatoria')
+    .matches(passwordRegex)
+    .withMessage('La contraseña debe tener 8-16 caracteres, incluir mayúscula, minúscula y un número')
+];
+
+/**
+ * Validador para la actualización de usuarios existentes
+ * @module validators/userValidators
+ * @description Define las reglas de validación para actualizar un usuario existente.
+ * Todos los campos son opcionales, pero si se proporcionan deben cumplir las reglas.
+ * Permite cadena vacía en password para mantener la contraseña actual.
+ * 
+ * @type {Array}
+ * 
+ * @example
+ * // Uso en rutas:
+ * router.put('/users/:user_id', updateUserValidator, adminController.updateUserById);
+ * 
+ * // Body opcional (parcial update):
+ * {
+ *   "role": "hr",
+ *   "email": "nuevo@example.com",
+ *   "password": ""  // Cadena vacía = mantener contraseña actual
+ * }
+ */
+exports.updateUserValidator = [
+  /**
+   * Valida el parámetro 'user_id' en la URL
+   * @name validateUserIdParam
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Debe ser un número entero válido
+   * - Parámetro obligatorio en la ruta
+   */
+  param('user_id')
+    .isInt().withMessage('ID de usuario inválido'),
+  
+  /**
+   * Valida el campo 'role' durante la actualización
+   * @name validateRoleUpdate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo opcional
+   * - Si se proporciona, debe ser uno de: 'admin', 'hr', 'mkt'
+   */
+  body('role')
+    .optional()
+    .custom(role => validRoles.includes(role.toLowerCase()))
+    .withMessage(`Rol inválido. Los permitidos son: ${validRoles.join(', ')}`),
+  
+  /**
+   * Valida el campo 'email' durante la actualización
+   * @name validateEmailUpdate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo opcional
+   * - Si se proporciona, debe tener formato de email válido
+   */
+  body('email')
+    .optional()
+    .matches(emailRegex).withMessage('Email inválido'),
+  
+  /**
+   * Valida el campo 'password' durante la actualización
+   * @name validatePasswordUpdate
+   * @function
+   * @memberof validators/userValidators
+   * @returns {Object} Cadena de validación
+   * @description 
+   * - Campo opcional
+   * - Permite cadena vacía para mantener contraseña actual
+   * - Si se proporciona un valor no vacío, debe cumplir requisitos de seguridad
+   * - Validación personalizada para manejar caso especial de cadena vacía
+   */
+  body('password')
+    .optional()
+    .custom((value) => {
+      if (value === "") return true; // permite string vacío
+      const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,16}$/;
+      if (!passwordRegex.test(value)) {
+        throw new Error('La contraseña debe tener 8-16 caracteres, incluir mayúscula, minúscula y un número');
+      }
+      return true;
+    })
+];</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

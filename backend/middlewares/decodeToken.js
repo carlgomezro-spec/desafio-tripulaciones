@@ -1,44 +1,42 @@
 const express = require("express");
-const jwt = require('jsonwebtoken');
-
-const SECRET = process.env.JWT_SECRET;
+const { verifyAccessToken } = require('../config/jsonwebtoken');
 
 const decodeToken = express.Router();
 
 decodeToken.use(async (req, res, next) => {
     if (!req.token) {
+        const refreshToken = req.cookies?.refresh_token;
+        
+        if (refreshToken) {
+            req.hasRefreshToken = true;
+        }
+        
         req.user = null;
         return next();
     }
     
-    if (!SECRET) {
-        return res.status(500).json({
-            success: false,
-            error: 'Error de configuración del servidor'
-        });
-    }
-    
     try {
-        const decoded = await new Promise((resolve, reject) => {
-            jwt.verify(req.token, SECRET, (err, decoded) => {
-                if (err) reject(err);
-                else resolve(decoded);
-            });
-        });
+        const decoded = verifyAccessToken(req.token);
         
         req.user = {
             id_user: decoded.id_user,
             email: decoded.email,
             role: decoded.role || 'user',
             name: decoded.name || '',
-            surname: decoded.surname || '',
-            loginMethod: decoded.loginMethod || 'traditional'
+            surname: decoded.surname || ''
         };
+        req.tokenExpired = false;
         
         return next();
         
     } catch (error) {
-        req.user = null;
+        if (error.message === 'ACCESS_TOKEN_EXPIRED') {
+            req.tokenExpired = true;
+            req.user = null;
+        } else {
+            req.user = null;
+            req.tokenExpired = false;
+        }
         return next();
     }
 });

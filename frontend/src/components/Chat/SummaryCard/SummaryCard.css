@@ -1,0 +1,4 @@
+.summary-card,
+.data-table {
+  animation: fadeInUp 0.3s ease-out both;
+}

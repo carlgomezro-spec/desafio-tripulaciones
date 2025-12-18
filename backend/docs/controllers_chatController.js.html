@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/chatController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/chatController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { interpretQuestion } = require("../services/openAiService.js");
+const { executeQuery } = require("../services/queryService.js");
+
+/**
+ * Envía y procesa un mensaje para consultas asistidas por IA
+ * @async
+ * @function sendMessage
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.body - Cuerpo de la petición
+ * @param {string} req.body.message - Mensaje/consulta del usuario
+ * @param {Object} [req.body.dateRange] - Rango de fechas opcional
+ * @param {string} [req.body.dateRange.start] - Fecha de inicio (YYYY-MM-DD)
+ * @param {string} [req.body.dateRange.end] - Fecha de fin (YYYY-MM-DD)
+ * @param {Object} req.user - Usuario autenticado
+ * @param {string} req.user.role - Rol del usuario ('mkt', 'hr', etc.)
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise&lt;Object>} Respuesta JSON con el resultado procesado
+ * @throws {Error} 403 - Acceso no permitido si el rol no es válido
+ * @throws {Error} 500 - Error interno del servidor
+ * @description 
+ * Procesa consultas en lenguaje natural, interpreta la intención mediante IA,
+ * y ejecuta consultas a la base de datos. Soporta filtrado por rango de fechas
+ * y control de acceso por roles.
+ * 
+ * @example
+ * // POST /api/chat/send
+ * // Body (sin dateRange):
+ * {
+ *   "message": "¿Cuántas ventas hubo este mes?"
+ * }
+ * // Respuesta con necesidad de fechas:
+ * {
+ *   "type": "intent",
+ *   "data": {
+ *     "intent": "sales_report",
+ *     "needsDateRange": true,
+ *     "parameters": { "metric": "count" }
+ *   }
+ * }
+ * 
+ * @example
+ * // POST /api/chat/send
+ * // Body (con dateRange):
+ * {
+ *   "message": "Ventas por producto",
+ *   "dateRange": {
+ *     "start": "2024-01-01",
+ *     "end": "2024-01-31"
+ *   }
+ * }
+ * // Respuesta con datos:
+ * {
+ *   "type": "data",
+ *   "data": [...],
+ *   "columns": ["producto", "ventas"],
+ *   "summary": "Total: 150 ventas"
+ * }
+ * 
+ * @example
+ * // Respuesta de error de acceso:
+ * {
+ *   "type": "text",
+ *   "content": "Acceso no permitido"
+ * }
+ */
+const sendMessage = async (req, res) => {
+  try {
+    const { message, dateRange } = req.body;
+    const { role } = req.user;
+
+    // Control de acceso por rol
+    if (role !== "mkt" &amp;&amp; role !== "hr") {
+      return res.status(403).json({
+        type: "text",
+        content: "Acceso no permitido"
+      });
+    }
+
+    // Si se proporciona dateRange, ejecutar consulta directamente
+    if (dateRange) {
+      const response = await executeQuery(message, dateRange);
+      return res.json(response);
+    }
+
+    // Interpretar la intención de la consulta mediante IA
+    const intentData = await interpretQuestion(message);
+
+    // Si no necesita rango de fechas, ejecutar consulta inmediatamente
+    if (!intentData.needsDateRange) {
+      const response = await executeQuery(intentData);
+      return res.json(response);
+    }
+
+    // Solicitar rango de fechas al cliente
+    return res.json({
+      type: "intent",
+      data: intentData
+    });
+
+  } catch (error) {
+    console.error("Error en sendMessage:", error);
+    return res.status(500).json({
+      type: "text",
+      content: "❌ Error procesando la consulta"
+    });
+  }
+};
+
+/**
+ * Módulo de controlador para el chat asistido por IA
+ * @module controllers/chatController
+ * @description Controlador para procesar consultas en lenguaje natural
+ * utilizando IA para interpretación y ejecución de consultas a base de datos.
+ * Incluye control de acceso por roles y soporte para filtros por fecha.
+ */
+module.exports = { sendMessage };</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

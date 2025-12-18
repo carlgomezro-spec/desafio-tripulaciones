@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: queries/mktQueries</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: queries/mktQueries</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Consultas SQL para datos de marketing con soporte de paginación.Incluye queries para ventas, clientes y productos con LIMIT/OFFSET yqueries separadas para conteo total de registros.</div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="~countCustomers"><span class="type-signature">(inner) </span>countCustomers<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query para obtener el número total de clientes registrados.Campos retornados:- total (number) - Número total de clientes
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso combinado:const countResult = await pool.query(queries.countCustomers);const total = Number(countResult.rows[0].total);</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~countProducts"><span class="type-signature">(inner) </span>countProducts<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query para obtener el número total de productos.Campos retornados:- total (number) - Número total de productos
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line190">line 190</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Para calcular paginación:const countResult = await pool.query(queries.countProducts);const total = Number(countResult.rows[0].total);const totalPages = Math.ceil(total / limit);</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~countSales"><span class="type-signature">(inner) </span>countSales<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query para obtener el número total de registros en la tabla sales.Se combina con getSalesPaginated para calcular totalPages en la paginación.Campos retornados:- total (number) - Número total de ventas
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en mktModel.getSalesPaginated():const countResult = await pool.query(queries.countSales);const total = Number(countResult.rows[0].total); // Ej: 150</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getCustomersPaginated"><span class="type-signature">(inner) </span>getCustomersPaginated<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query paginada para obtener información básica de clientes.Ordena alfabéticamente por apellido y nombre.Parámetros:- $1: limit (number) - Máximo de registros a retornar- $2: offset (number) - Número de registros a saltarCampos retornados:- customer_id, first_name_customer, last_name_customer, email, region
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en mktModel.getCustomersPaginated():const result = await pool.query(queries.getCustomersPaginated, [15, 30]);// Retorna máximo 15 clientes, saltando los primeros 30// Ordenados alfabéticamente</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getProducts"><span class="type-signature">(inner) </span>getProducts<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query original para obtener productos sin paginación.Mantenida por compatibilidad. Usar getProductsPaginated para paginación.Campos retornados:- product_id, product_name, category, unit_price
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Considerar usar getProductsPaginated para consistencia con otras queries.</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~getProductsPaginated"><span class="type-signature">(inner) </span>getProductsPaginated<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query paginada para obtener información de productos.Ordena alfabéticamente por nombre de producto.Parámetros:- $1: limit (number) - Máximo de registros a retornar- $2: offset (number) - Número de registros a saltarCampos retornados:- product_id, product_name, category, unit_price
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en mktModel.getProductsPaginated():const result = await pool.query(queries.getProductsPaginated, [20, 0]);// Retorna los primeros 20 productos ordenados alfabéticamente</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~getSalesPaginated"><span class="type-signature">(inner) </span>getSalesPaginated<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    Query paginada para obtener ventas con joins a clientes y productos.Usa LIMIT y OFFSET para paginación. Ordena por fecha de venta descendente.Parámetros:- $1: limit (number) - Máximo de registros a retornar- $2: offset (number) - Número de registros a saltarCampos retornados:- sale_id, employee_id, customer_id, first_name_customer, last_name_customer- product_name, sales_channel, quantity, discount_percentage, subtotal- discount_amount, total, payment_method, sale_timestamp
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Uso en mktModel.getSalesPaginated():const result = await pool.query(queries.getSalesPaginated, [10, 20]);// Retorna máximo 10 ventas, saltando las primeras 20// Ordenadas por fecha más reciente primero</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="~queries"><span class="type-signature">(inner, constant) </span>queries<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    Objeto que contiene las queries SQL para el módulo de Marketing
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>getSalesPaginated</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query paginada para ventas</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>countSales</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para contar total de ventas</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getCustomersPaginated</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query paginada para clientes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>countCustomers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para contar total de clientes</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getProducts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query no paginada para productos (legacy)</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>getProductsPaginated</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query paginada para productos</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>countProducts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Query para contar total de productos</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="queries_mktQueries.js.html">queries/mktQueries.js</a>, <a href="queries_mktQueries.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-controllers_adminController.html">controllers/adminController</a></li><li><a href="module-controllers_authController.html">controllers/authController</a></li><li><a href="module-controllers_chatController.html">controllers/chatController</a></li><li><a href="module-controllers_hrController.html">controllers/hrController</a></li><li><a href="module-controllers_mktController.html">controllers/mktController</a></li><li><a href="module-middlewares_authMiddleware.html">middlewares/authMiddleware</a></li><li><a href="module-middlewares_checkRefreshCookie.html">middlewares/checkRefreshCookie</a></li><li><a href="module-middlewares_error404.html">middlewares/error404</a></li><li><a href="module-middlewares_validationMiddleware.html">middlewares/validationMiddleware</a></li><li><a href="module-models_adminModel.html">models/adminModel</a></li><li><a href="module-models_authModel.html">models/authModel</a></li><li><a href="module-models_hrModel.html">models/hrModel</a></li><li><a href="module-models_mktModel.html">models/mktModel</a></li><li><a href="module-queries_adminQueries.html">queries/adminQueries</a></li><li><a href="module-queries_authQueries.html">queries/authQueries</a></li><li><a href="module-queries_hrQueries.html">queries/hrQueries</a></li><li><a href="module-queries_mktQueries.html">queries/mktQueries</a></li><li><a href="module-services_openAiService.html">services/openAiService</a></li><li><a href="module-services_queryService.html">services/queryService</a></li><li><a href="module-validators_authValidators.html">validators/authValidators</a></li><li><a href="module-validators_userValidators.html">validators/userValidators</a></li></ul><h3>Global</h3><ul><li><a href="global.html#executeQuery">executeQuery</a></li><li><a href="global.html#interpretQuestion">interpretQuestion</a></li><li><a href="global.html#sendMessage">sendMessage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 17 2025 13:45:06 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
