@@ -1,15 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Navbar.css";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+ 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/login");
+    // Mostramos el SweetAlert
+    Swal.fire({
+      icon: "success",
+      title: "Sesión cerrada",
+      text: "Has cerrado sesión correctamente.",
+      confirmButtonText: "Aceptar",
+      background: "#333333",      // fondo del alert
+      color: "#ffffff",           // color del texto
+      confirmButtonColor: "#a1af93" // color del botón
+    }).then(() => {
+      // Limpiamos el localStorage y redirigimos
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      navigate("/login");
+    });
   };
 
   return (

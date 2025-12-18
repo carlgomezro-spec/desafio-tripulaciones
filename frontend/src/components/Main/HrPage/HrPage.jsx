@@ -107,7 +107,7 @@ const HrPage = () => {
           </button>
           <button
             onClick={() => setView("add")}
-            style={{ marginLeft: "1rem" }}
+            
           >
             ➕ Añadir empleado
           </button>
@@ -138,7 +138,7 @@ const HrPage = () => {
                   <td data-label="Departamento">{emp.department}</td>
                   <td data-label="Puesto">{emp.position}</td>
                   <td data-label="Acciones">
-                    <button onClick={() => handleDelete(emp.employee_id)}>
+                    <button onClick={() => handleDelete(emp.employee_id)} className="deletebutton">
                       Eliminar
                     </button>
                   </td>
