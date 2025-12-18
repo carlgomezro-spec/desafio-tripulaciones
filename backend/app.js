@@ -42,10 +42,10 @@ app.use(cors({
 // Middlewares 
 app.use(express.json());
 // Ciberseguridad (Timeout)
-app.use(timeout('10s'));
-app.use((req, res, next) => {
-  if (!req.timedout) next();
-});
+// app.use(timeout('10s'));
+// app.use((req, res, next) => {
+//   if (!req.timedout) next();
+// });
 
 // Morgan
 app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));

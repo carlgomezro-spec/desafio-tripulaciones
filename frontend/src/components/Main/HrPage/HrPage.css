@@ -153,6 +153,16 @@
     padding: 0.5rem;
   }
 
+  .buttonsTable {
+    flex-direction: column;   /* 👈 vertical */
+    align-items: stretch;     /* ocupa todo el ancho */
+    gap: 0.75rem;
+  }
+
+  .buttonsTable button {
+    width: 100%;              /* botones full width en móvil */
+  }
+
  
 
   .hr-table td::before {
