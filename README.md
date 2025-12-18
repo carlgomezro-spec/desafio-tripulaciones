@@ -125,5 +125,59 @@ frontend/
 │        └── Pagination
 │ └── services
 
+## 📄 Instrucciones
+### 1. Clona el repositorio 
 
+```bash
+git clone https://github.com/luciaaroca/desafio-tripulaciones.git
+```
+
+### 2. Instalar dependendias
+
+```bash
+npm install (Dependencias globales)
+
+cd frontend
+npm install (Dependencias frontend)
+
+cd ../backend
+npm install (Dependencia backend)
+```
+
+### 3. Configurar variables de entorno
+
+
+```bash
+Backend:
+# BBDD remota
+
+# SQL
+# Datos BBDD PostgreSQL
+PG_USER=
+# Busca la IP de tu ordenador y cambiala en HOST:
+PG_HOST=
+PG_DATABASE=
+PG_PASSWORD=
+PG_PORT=
+JWT_SECRET=
+JWT_REFRESH_SECRET=
+PG_SSL=
+# Servidor
+PORT=
+# Con docker o en render: NODE_ENV=production
+NODE_ENV=
+# Api Key OpenAI
+OPENAI_API_KEY=
+
+# Json Web Token
+MY_TOKEN_SECRET=
+--------
+Frontend
+VITE_API_URL=
+VITE_API_LLM=
+```
+### 5. Iniciar el servidor:
+```bash
+- npm run dev
+```
 
