@@ -13,7 +13,12 @@ La aplicación sigue una **arquitectura Cliente-Servidor**, separando claramente
 ![MockUp](assets/Mockup.png)
 
 
+---
+# 🚀 Aplicación desplegada
 
+- https://globo-market.onrender.com
+
+---
 ## 🏗️ Arquitectura General
 
 ### Modelo Cliente-Servidor
